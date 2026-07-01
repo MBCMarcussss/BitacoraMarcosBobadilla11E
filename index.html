@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bitácora Bobadilla Marcos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlQeyzOynJH9bbjVOIbPDtWT2Jh1RAeol3ew&s">
     <style>
         * {
@@ -22,7 +23,8 @@
         }
 
         header {
-            position: fixed;
+            /* CAMBIO: De 'fixed' a 'absolute' para que se quede arriba al hacer scroll */
+            position: absolute;
             top: 0;
             width: 100%;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -105,11 +107,46 @@
             transition: transform 0.3s ease;
             cursor: pointer;
         }
+
+        /* NUEVO: Estilos para el botón de ir arriba */
+        .btn-back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* Efecto Hover para el botón igual que la estética de tu web */
+        .btn-back-to-top:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 15px #27bbfa;
+        }
+
+        /* Clase que se añade con JS cuando el botón debe ser visible */
+        .btn-back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
     </style>
 </head>
 <body>
 
-    <header>
+    <header id="mainHeader">
         <div class="header-title-container">
             <h1 class="main-title">Contenido de mi página web</h1>
         </div>
@@ -174,12 +211,17 @@
         </section>
     </div>
 
+    <button id="scrollToTopBtn" class="btn-back-to-top" title="Volver arriba">
+        <i class="bi bi-arrow-up-short"></i>
+    </button>
+
     <footer class="footer mt-auto py-3 border-top d-flex flex-wrap justify-content-between align-items-center px-4">
         <span class="text-muted">© 2026 Marcos Bobadilla</span>
         <img id="logoColegio" class="colegio footer-logo" src="https://tse2.mm.bing.net/th/id/OIP.qox5AAiWc0VQcBPON196iQHaBy?r=0&rs=1&pid=ImgDetMain&o=7&rm=3">
     </footer>
 
     <script>
+        // Lógica existente para el logo del colegio
         const logo = document.getElementById('logoColegio');
 
         logo.addEventListener('mouseenter', () => {
@@ -188,6 +230,30 @@
 
         logo.addEventListener('mouseleave', () => {
             logo.style.transform = "scale(1)";
+        });
+
+        // NUEVO: Lógica para mostrar/ocultar el botón y hacer scroll hacia arriba
+        const backToTopBtn = document.getElementById('scrollToTopBtn');
+        const header = document.getElementById('mainHeader');
+
+        window.addEventListener('scroll', () => {
+            // Obtenemos la altura del header dinámicamente
+            const headerHeight = header.offsetHeight;
+            
+            // Si el scroll supera la altura del header, mostramos el botón
+            if (window.scrollY > headerHeight) {
+                backToTopBtn.classList.add('show');
+            } else {
+                backToTopBtn.classList.remove('show');
+            }
+        });
+
+        // Al hacer click, sube suavemente (smooth) hasta el inicio
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
     </script>
 
