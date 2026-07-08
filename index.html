@@ -23,7 +23,6 @@
         }
 
         header {
-            /* CAMBIO: De 'fixed' a 'absolute' para que se quede arriba al hacer scroll */
             position: absolute;
             top: 0;
             width: 100%;
@@ -72,13 +71,12 @@
             margin-bottom: 2rem;
         }
 
-        /* Estilo compartido para PDF y Video */
         .media-container {
             margin-top: 20px;
             border: 1px solid #ddd;
             border-radius: 8px;
             overflow: hidden;
-            background-color: #000; /* Fondo negro para el video */
+            background-color: #000;
         }
 
         @keyframes fadeIn {
@@ -108,7 +106,6 @@
             cursor: pointer;
         }
 
-        /* NUEVO: Estilos para el botón de ir arriba */
         .btn-back-to-top {
             position: fixed;
             bottom: 30px;
@@ -131,13 +128,11 @@
             transition: all 0.3s ease;
         }
 
-        /* Efecto Hover para el botón igual que la estética de tu web */
         .btn-back-to-top:hover {
             transform: scale(1.1);
             box-shadow: 0 0 15px #27bbfa;
         }
 
-        /* Clase que se añade con JS cuando el botón debe ser visible */
         .btn-back-to-top.show {
             opacity: 1;
             visibility: visible;
@@ -153,6 +148,7 @@
     </header>
 
     <div class="main-content">
+        <!-- SEMANA 1 -->
         <section id="semana1" class="content-section">
             <h2 class="section-title">Semana 1: Introducción Arduino</h2>
             <p class="placeholder-text">En esta sección aprendimos los componentes de Arduino y cómo interactuar con componentes básicos.</p>
@@ -165,8 +161,25 @@
             </p>
         </section>
 
+        <!-- SEMANA 2 (NUEVO VIDEO CORREGIDO) -->
         <section id="semana2" class="content-section">
-            <h2 class="section-title">Semana 2: Primer circuito y programación</h2>
+            <h2 class="section-title">Semana 2: Primer circuito y programación (Corregido)</h2>
+            <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito con arduino UNO con estructuras avanzadas en Tinkercad (Versión corregida).</p>
+            
+            <div class="media-container">
+                <video width="100%" height="auto" controls>
+                    <source src="TU_NUEVO_VIDEO_CORREGIDO.mp4" type="video/mp4">
+                    Tu navegador no soporta la reproducción de videos.
+                </video>
+            </div>
+            <p class="mt-2 text-center">
+                <small class="text-muted">Video explicativo del circuito corregido.</small>
+            </p>
+        </section>
+
+        <!-- SEMANA 3 (ANTERIOR VIDEO DE LA SEMANA 2) -->
+        <section id="semana3" class="content-section">
+            <h2 class="section-title">Semana 3: Primer circuito y programación</h2>
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito con arduino UNO con estructuras avanzadas en Tinkercad.</p>
             
             <div class="media-container">
@@ -180,8 +193,9 @@
             </p>
         </section>
 
-        <section id="semana3" class="content-section">
-            <h2 class="section-title">Semana 3: Primer circuito y programación en físico</h2>
+        <!-- SEMANA 4 (ANTERIOR VIDEO DE LA SEMANA 3) -->
+        <section id="semana4" class="content-section">
+            <h2 class="section-title">Semana 4: Primer circuito y programación en físico</h2>
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito con arduino UNO con estructuras avanzadas en físico.</p>
             
             <div class="media-container">
@@ -191,12 +205,13 @@
                 </video>
             </div>
             <p class="mt-2 text-center">
-                <small class="text-muted">Video explicativo del circuito.</small>
+                <small class="text-muted">Video explicativo del circuito en físico.</small>
             </p>
         </section>
 
-        <section id="semana4" class="content-section">
-            <h2 class="section-title">Semana 4: Segundo circuito y programación en físico</h2>
+        <!-- SEMANA 5 (ANTERIOR VIDEO DE LA SEMANA 4) -->
+        <section id="semana5" class="content-section">
+            <h2 class="section-title">Semana 5: Segundo circuito y programación en físico</h2>
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro segundo circuito con arduino UNO con estructuras avanzadas en físico.</p>
             
             <div class="media-container">
@@ -206,7 +221,39 @@
                 </video>
             </div>
             <p class="mt-2 text-center">
-                <small class="text-muted">Video explicativo del circuito.</small>
+                <small class="text-muted">Video explicativo del segundo circuito en físico.</small>
+            </p>
+        </section>
+
+        <!-- SEMANA 6 (NUEVA) -->
+        <section id="semana6" class="content-section">
+            <h2 class="section-title">Semana 6: Tercer circuito y automatización</h2>
+            <p class="placeholder-text">En esta clase avanzamos hacia nuevas implementaciones y lógicas de programación con sensores.</p>
+            
+            <div class="media-container">
+                <video width="100%" height="auto" controls>
+                    <source src="VideoSemana6.mp4" type="video/mp4">
+                    Tu navegador no soporta la reproducción de videos.
+                </video>
+            </div>
+            <p class="mt-2 text-center">
+                <small class="text-muted">Video explicativo de la semana 6.</small>
+            </p>
+        </section>
+
+        <!-- SEMANA 7 (NUEVA) -->
+        <section id="semana7" class="content-section">
+            <h2 class="section-title">Semana 7: Proyecto e integración final</h2>
+            <p class="placeholder-text">Presentación y pruebas del sistema completo integrado en el protoboard físico.</p>
+            
+            <div class="media-container">
+                <video width="100%" height="auto" controls>
+                    <source src="VideoSemana7.mp4" type="video/mp4">
+                    Tu navegador no soporta la reproducción de videos.
+                </video>
+            </div>
+            <p class="mt-2 text-center">
+                <small class="text-muted">Video explicativo final.</small>
             </p>
         </section>
     </div>
@@ -221,7 +268,6 @@
     </footer>
 
     <script>
-        // Lógica existente para el logo del colegio
         const logo = document.getElementById('logoColegio');
 
         logo.addEventListener('mouseenter', () => {
@@ -232,15 +278,12 @@
             logo.style.transform = "scale(1)";
         });
 
-        // NUEVO: Lógica para mostrar/ocultar el botón y hacer scroll hacia arriba
         const backToTopBtn = document.getElementById('scrollToTopBtn');
         const header = document.getElementById('mainHeader');
 
         window.addEventListener('scroll', () => {
-            // Obtenemos la altura del header dinámicamente
             const headerHeight = header.offsetHeight;
             
-            // Si el scroll supera la altura del header, mostramos el botón
             if (window.scrollY > headerHeight) {
                 backToTopBtn.classList.add('show');
             } else {
@@ -248,7 +291,6 @@
             }
         });
 
-        // Al hacer click, sube suavemente (smooth) hasta el inicio
         backToTopBtn.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
