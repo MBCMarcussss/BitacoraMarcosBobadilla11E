@@ -87,6 +87,7 @@
         .audio-player-container {
             grid-column: 1;
             justify-self: start;
+            position: relative;
         }
 
         .audio-control-btn {
@@ -106,6 +107,83 @@
 
         .audio-control-btn:hover {
             background: rgba(255, 255, 255, 0.35);
+        }
+
+        /* VENTANA FLOTANTE DEL REPRODUCTOR */
+        .music-popover {
+            display: none;
+            position: absolute;
+            top: 120%;
+            left: 0;
+            width: 260px;
+            background: rgba(20, 20, 25, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 1100;
+            color: white;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+
+        .music-popover.show {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .song-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            line-height: 1.2;
+        }
+
+        .audio-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 0.8rem;
+        }
+
+        .btn-audio-action {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-audio-action:hover {
+            opacity: 0.9;
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+        }
+
+        .volume-slider {
+            width: 100%;
+            accent-color: var(--accent-color);
+            cursor: pointer;
         }
 
         .main-title {
@@ -318,17 +396,37 @@
 
     <header id="mainHeader">
         <div class="header-title-container">
-            <!-- REPRODUCTOR DE AUDIO INTERACTIVO (LADO IZQUIERDO DEL TÍTULO) -->
+            <!-- REPRODUCTOR DE AUDIO INTERACTIVO -->
             <div class="audio-player-container">
-                <!-- Cambia 'mi-audio-de-fondo.mp3' por la ruta/nombre de tu archivo subido a GitHub -->
                 <audio id="bgAudio" loop preload="auto">
-                    <source src="mi-audio-de-fondo.mp3" type="audio/mpeg">
+                    <source src="Musicafondo 1.m4a" type="audio/mpeg">
                     Tu navegador no soporta el elemento de audio.
                 </audio>
-                <button id="audioToggleBtn" class="audio-control-btn" onclick="toggleAudio()">
+                
+                <button id="audioToggleBtn" class="audio-control-btn" onclick="toggleMusicPopover(event)">
                     <i id="audioIcon" class="bi bi-music-note-beamed"></i>
-                    <span id="audioText">Música</span>
+                    <span>Música</span>
                 </button>
+
+                <!-- MINI VENTANA INTERACTIVA -->
+                <div id="musicPopover" class="music-popover">
+                    <div class="song-title">
+                        <i class="bi bi-disc text-info"></i>
+                        <span>Die with a smile - Bruno Mars piano cover</span>
+                    </div>
+                    <div class="audio-actions">
+                        <button class="btn-audio-action" onclick="playAudio()">
+                            <i class="bi bi-play-fill"></i> Reproducir
+                        </button>
+                        <button class="btn-audio-action" style="background: rgba(255,255,255,0.2);" onclick="pauseAudio()">
+                            <i class="bi bi-pause-fill"></i> Pausar
+                        </button>
+                    </div>
+                    <div class="volume-container">
+                        <i id="volumeIcon" class="bi bi-volume-up-fill"></i>
+                        <input type="range" id="volumeSlider" class="volume-slider" min="0" max="1" step="0.01" value="1" oninput="setVolume(this.value)">
+                    </div>
+                </div>
             </div>
 
             <h1 class="main-title">Contenido de mi página web</h1>
@@ -541,22 +639,44 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        /* === LÓGICA DE REPRODUCCIÓN DE AUDIO DE FONDO === */
+        /* === LÓGICA DEL REPRODUCTOR DE AUDIO E INTERFAZ FLOTANTE === */
         const audio = document.getElementById('bgAudio');
+        const popover = document.getElementById('musicPopover');
         const audioIcon = document.getElementById('audioIcon');
-        const audioText = document.getElementById('audioText');
+        const volumeIcon = document.getElementById('volumeIcon');
 
-        function toggleAudio() {
-            if (audio.paused) {
-                audio.play();
-                audioIcon.className = 'bi bi-pause-fill';
-                audioText.innerText = 'Pausar';
+        function toggleMusicPopover(event) {
+            event.stopPropagation();
+            popover.classList.toggle('show');
+        }
+
+        function playAudio() {
+            audio.play();
+            audioIcon.className = 'bi bi-soundwave text-info';
+        }
+
+        function pauseAudio() {
+            audio.pause();
+            audioIcon.className = 'bi bi-music-note-beamed';
+        }
+
+        function setVolume(val) {
+            audio.volume = val;
+            if (val == 0) {
+                volumeIcon.className = 'bi bi-volume-mute-fill';
+            } else if (val < 0.5) {
+                volumeIcon.className = 'bi bi-volume-down-fill';
             } else {
-                audio.pause();
-                audioIcon.className = 'bi bi-music-note-beamed';
-                audioText.innerText = 'Música';
+                volumeIcon.className = 'bi bi-volume-up-fill';
             }
         }
+
+        // Cierra la mini ventana al hacer clic fuera de ella
+        document.addEventListener('click', (event) => {
+            if (!event.target.closest('.audio-player-container')) {
+                popover.classList.remove('show');
+            }
+        });
 
         const logo = document.getElementById('logoColegio');
         logo.addEventListener('mouseenter', () => logo.style.transform = "scale(1.2)");
