@@ -1,81 +1,48 @@
 <!DOCTYPE html>
-<html lang="es" class="h-100">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bitácora Bobadilla Marcos</title>
+    <title>Dashboard con Estadísticas Dinámicas</title>
+    
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlQeyzOynJH9bbjVOIbPDtWT2Jh1RAeol3ew&s">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         :root {
-            /* Variables de Color (Punto 9: Personalización) */
-            --primary-gradient: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
-            --accent-color: #5a67d8;
-            --card-bg: rgba(255, 255, 255, 0.92);
-            --text-color: #333333;
-            --subtext-color: #444444;
-            --border-color: #dddddd;
-        }
-
-        /* Punto 2: Modo Oscuro / Claro */
-        body.light-mode {
-            --card-bg: rgba(248, 249, 250, 0.95);
-            --text-color: #111111;
-            --subtext-color: #222222;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --primary-gradient: linear-gradient(135deg, #3e13fe, #9d1df2);
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #212529;
         }
 
         body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            position: relative;
-            background-color: #000;
+            background-color: var(--bg-color);
             color: var(--text-color);
-            transition: background-color 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 90px;
         }
 
-        /* VIDEO DE FONDO FIJO */
-        #bg-video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: -2;
-        }
-
-        .video-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.35);
-            z-index: -1;
-        }
-
+        /* --- HEADER Y TÍTULO CENTRADO --- */
         header {
-            position: absolute;
+            position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
             background: var(--primary-gradient);
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 1000;
             transition: background 0.3s ease;
         }
-        
+
         .header-title-container {
+            position: relative;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             padding: 1.2rem 2rem;
             max-width: 1200px;
@@ -89,511 +56,214 @@
             letter-spacing: 2px;
             font-weight: bold;
             margin: 0;
+            text-align: center;
             text-shadow: 
                 0 0 5px #3e13fe,
                 0 0 10px #27bbfa,
                 0 0 20px #9d1df2;
         }
 
-        /* Punto 9: Selector de Temas UI */
-        .theme-picker-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            cursor: pointer;
-            backdrop-filter: blur(5px);
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
+        .header-theme-picker {
+            position: absolute;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
         }
 
-        .theme-picker-btn:hover {
-            background: rgba(255, 255, 255, 0.35);
-        }
-
-        .main-content {
-            margin-top: 110px; 
-            padding: 1.5rem;
-            max-width: 1000px;
-            margin-left: auto;
-            margin-right: auto;
-            flex: 1 0 auto;
-            width: 100%;
-        }
-
-        .content-section {
-            padding: 2rem;
+        /* --- CARDS & ESTADÍSTICAS --- */
+        .stat-card {
             background: var(--card-bg);
-            backdrop-filter: blur(8px);
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
-            margin-bottom: 2rem;
-            transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
         }
-
-        /* Punto 8: Scroll Reveal Sutil */
-        .reveal-on-scroll {
-            opacity: 0;
-            transform: translateY(25px);
-            will-change: opacity, transform;
-        }
-
-        .reveal-on-scroll.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Punto 10: Tarjeta de Estadísticas */
-        .stats-card {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(8px);
-            border-radius: 12px;
-            padding: 1.2rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 0.5rem;
+        .stat-card:hover {
+            transform: translateY(-3px);
         }
 
         .stat-number {
-            font-size: 1.6rem;
+            font-size: 2rem;
             font-weight: bold;
-            color: var(--accent-color);
+            color: #3e13fe;
         }
 
-        .stat-label {
-            font-size: 0.85rem;
-            color: #666;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        /* Punto 1: Controles de Búsqueda y Filtros */
-        .filter-container {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(8px);
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
-
-        .btn-filter {
-            border-radius: 20px;
-            padding: 0.3rem 0.9rem;
-            font-size: 0.85rem;
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
-            background: transparent;
-            transition: all 0.2s ease;
-            margin: 0.2rem;
-        }
-
-        .btn-filter.active, .btn-filter:hover {
-            background: var(--accent-color);
-            color: white;
-        }
-
-        .media-container {
-            margin-top: 20px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            overflow: hidden;
-            background-color: #000;
-        }
-        
-        .section-title {
-            color: var(--accent-color);
-            margin-bottom: 1.2rem;
-            font-size: 1.8rem;
-            font-weight: bold;
-            text-shadow: none;
-        }
-
-        .placeholder-text {
-            line-height: 1.6;
-            color: var(--subtext-color);
-            margin-bottom: 1rem;
-        }
-
-        footer {
-            background: var(--primary-gradient);
-            backdrop-filter: blur(5px);
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
-            border: none !important;
-            transition: background 0.3s ease;
-        }
-
-        .footer-logo {
-            height: 50px;
-            transition: transform 0.3s ease;
-            cursor: pointer;
-            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
-        }
-
-        /* Botones Flotantes (Punto 2 & Scroll Top) */
-        .floating-controls {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            z-index: 1000;
-        }
-
-        .btn-float {
-            width: 48px;
-            height: 48px;
-            background: var(--primary-gradient);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.35);
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.3rem;
-            transition: transform 0.2s ease, opacity 0.3s ease;
-        }
-
-        .btn-float:hover {
-            transform: scale(1.1);
-        }
-
-        .btn-back-to-top {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .btn-back-to-top.show {
-            opacity: 1;
-            visibility: visible;
+        .chart-container {
+            position: relative;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
     </style>
 </head>
 <body>
 
-    <!-- VIDEO DE FONDO FIJO -->
-    <video autoplay loop muted playsinline id="bg-video">
-        <source src="snoopyfondovideo.mp4" type="video/mp4">
-        Tu navegador no soporta el video de fondo.
-    </video>
-    <div class="video-overlay"></div>
-
+    <!-- HEADER CENTRADO -->
     <header id="mainHeader">
         <div class="header-title-container">
-            <h1 class="main-title">Contenido de mi página web</h1>
+            <h1 class="main-title">Control de Estadísticas Semanales</h1>
             
-            <!-- Punto 9: Menú de Selección de Temas -->
-            <div class="dropdown">
-                <button class="theme-picker-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="dropdown header-theme-picker">
+                <button class="btn btn-light btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-palette-fill me-1"></i> Tema
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow">
                     <li><a class="dropdown-item" href="#" onclick="changeTheme('default')">💜 Púrpura Original</a></li>
                     <li><a class="dropdown-item" href="#" onclick="changeTheme('ocean')">💙 Azul Neón</a></li>
                     <li><a class="dropdown-item" href="#" onclick="changeTheme('cyber')">💚 Verde Ciberpunk</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="changeTheme('sunset')">🧡 Naranja Creador</a></li>
                 </ul>
             </div>
         </div>
     </header>
 
-    <div class="main-content">
-
-        <!-- Punto 10: Sección de Estadísticas -->
-        <div class="stats-card reveal-on-scroll">
-            <div class="row g-2 align-items-center">
-                <div class="col-3 stat-item">
-                    <div class="stat-number" id="totalWeeks">9</div>
-                    <div class="stat-label">Semanas</div>
-                </div>
-                <div class="col-3 stat-item border-start">
-                    <div class="stat-number">2</div>
-                    <div class="stat-label">Sensores</div>
-                </div>
-                <div class="col-3 stat-item border-start">
-                    <div class="stat-number">100%</div>
-                    <div class="stat-label">Prácticas</div>
-                </div>
-                <div class="col-3 stat-item border-start">
-                    <div class="stat-number"><i class="bi bi-cpu"></i></div>
-                    <div class="stat-label">Arduino UNO</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Punto 1: Búsqueda y Filtro de Semanas -->
-        <div class="filter-container reveal-on-scroll">
-            <div class="row g-2 align-items-center">
-                <div class="col-md-6">
-                    <div class="input-group input-group-sm">
-                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
-                        <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Buscar semana o tema (ej. Sensor, RGB)...">
-                    </div>
-                </div>
-                <div class="col-md-6 text-md-end">
-                    <button class="btn-filter active" onclick="filterCategory('all', this)">Todos</button>
-                    <button class="btn-filter" onclick="filterCategory('sensor', this)">Sensórica</button>
-                    <button class="btn-filter" onclick="filterCategory('sim', this)">Simulación</button>
-                    <button class="btn-filter" onclick="filterCategory('fisico', this)">Físico</button>
+    <main class="container my-4">
+        <!-- FORMULARIO: REGISTRAR NUEVA SEMANA -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="stat-card">
+                    <h5 class="mb-3"><i class="bi bi-plus-circle-fill me-2"></i>Agregar Nueva Semana</h5>
+                    <form id="weekForm" class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Nombre de la Semana</label>
+                            <input type="text" id="weekName" class="form-control" placeholder="Ej: Semana 5" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Horas / Vistas / Unidades</label>
+                            <input type="number" id="weekValue" class="form-control" placeholder="Ej: 120" required>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100">Registrar y Actualizar Panel</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
 
-        <!-- SEMANA 1 -->
-        <section id="semana1" class="content-section reveal-on-scroll" data-category="sim">
-            <h2 class="section-title">Semana 1: Introducción a Arduino</h2>
-            <p class="placeholder-text">En esta sección aprendimos sobre los componentes de Arduino y cómo interactuar con elementos electrónicos básicos.</p>
-            
-            <div class="media-container">
-                <embed src="Introducción Arduino (3).pdf" type="application/pdf" width="100%" height="600px" />
+        <!-- INDICADORES CLAVE (KPIs) -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="stat-card text-center">
+                    <div class="text-muted">Total Semanas Registradas</div>
+                    <div class="stat-number" id="kpiTotalWeeks">0</div>
+                </div>
             </div>
-            <p class="mt-2 text-center">
-                <small class="text-muted">¿No puedes ver el PDF? <a href="Introducción Arduino (3).pdf" target="_blank">Haz clic aquí para abrirlo en otra pestaña.</a></small>
-            </p>
-        </section>
-
-        <!-- SEMANA 2 -->
-        <section id="semana2" class="content-section reveal-on-scroll" data-category="sim">
-            <h2 class="section-title">Semana 2: Primer circuito y programación</h2>
-            <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito con Arduino UNO usando estructuras avanzadas en Tinkercad (Diseño de semáforo básico).</p>
-            
-            <div class="media-container">
-                <video width="100%" height="auto" controls>
-                    <source src="Semana 2 TICS.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
+            <div class="col-md-4">
+                <div class="stat-card text-center">
+                    <div class="text-muted">Acumulado Total</div>
+                    <div class="stat-number" id="kpiTotalSum">0</div>
+                </div>
             </div>
-            <p class="mt-2 text-center">
-                <small class="text-muted">Video explicativo del circuito.</small>
-            </p>
-        </section>
-
-        <!-- SEMANA 3 -->
-        <section id="semana3" class="content-section reveal-on-scroll" data-category="sim">
-            <h2 class="section-title">Semana 3: Primer circuito y programación LED RGB</h2>
-            <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito con un módulo RGB en Arduino UNO mediante estructuras avanzadas en Tinkercad.</p>
-            
-            <div class="media-container">
-                <video width="100%" height="auto" controls>
-                    <source src="boba.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
+            <div class="col-md-4">
+                <div class="stat-card text-center">
+                    <div class="text-muted">Promedio Semanal</div>
+                    <div class="stat-number" id="kpiAverage">0</div>
+                </div>
             </div>
-            <p class="mt-2 text-center">
-                <small class="text-muted">Video explicativo del circuito.</small>
-            </p>
-        </section>
+        </div>
 
-        <!-- SEMANA 4 -->
-        <section id="semana4" class="content-section reveal-on-scroll" data-category="fisico">
-            <h2 class="section-title">Semana 4: Primer circuito y programación en físico</h2>
-            <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito utilizando un LED RGB y LEDs estándar con Arduino UNO en físico.</p>
-            
-            <div class="media-container">
-                <video width="100%" height="auto" controls>
-                    <source src="Videos3.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
+        <!-- GRÁFICA DE ESTADÍSTICAS -->
+        <div class="row">
+            <div class="col-12">
+                <div class="chart-container">
+                    <h5 class="mb-3">Rendimiento por Semana</h5>
+                    <canvas id="weeklyChart" height="100"></canvas>
+                </div>
             </div>
-            <p class="mt-2 text-center">
-                <small class="text-muted">Video explicativo del circuito en físico.</small>
-            </p>
-        </section>
+        </div>
+    </main>
 
-        <!-- SEMANA 5 -->
-        <section id="semana5" class="content-section reveal-on-scroll" data-category="fisico">
-            <h2 class="section-title">Semana 5: Segundo circuito y programación en físico</h2>
-            <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro segundo circuito enfocado en LEDs con Arduino UNO empleando estructuras avanzadas en físico.</p>
-            
-            <div class="media-container">
-                <video width="100%" height="auto" controls>
-                    <source src="VideoSemana4.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
-            </div>
-            <p class="mt-2 text-center">
-                <small class="text-muted">Video explicativo del segundo circuito en físico.</small>
-            </p>
-        </section>
-
-        <!-- SEMANA 6 -->
-        <section id="semana6" class="content-section reveal-on-scroll" data-category="sim">
-            <h2 class="section-title">Semana 6: Tercer circuito y automatización</h2>
-            <p class="placeholder-text">En esta clase avanzamos hacia nuevas implementaciones y lógicas de programación utilizando la función random.</p>
-            
-            <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
-                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
-                    <source src="randomseed-tics.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
-            </div>
-            <p class="mt-2 text-center">
-                <small class="text-muted">Video explicativo del circuito.</small>
-            </p>
-        </section>
-
-        <!-- SEMANA 7 -->
-        <section id="semana7" class="content-section reveal-on-scroll" data-category="fisico">
-            <h2 class="section-title">Semana 7: Proyecto del semáforo funcional</h2>
-            <p class="placeholder-text">Presentación y pruebas del sistema completo integrado para la creación de un semáforo en físico.</p>
-            
-            <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
-                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
-                    <source src="semaforo-tics.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
-            </div>
-            <p class="mt-2 text-center">
-                <small class="text-muted">Video explicativo del circuito.</small>
-            </p>
-        </section>
-
-        <!-- SEMANA 8 -->
-        <section id="semana8" class="content-section reveal-on-scroll" data-category="sensor">
-            <h2 class="section-title">Semana 8: Circuito con sensor ultrasonico</h2>
-            <p class="placeholder-text">En esta clase avanzamos hacia nuevas implementaciones y lógicas de programación utilizando un sensor ultrasonico.</p>
-            
-            <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
-                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
-                    <source src="SensorUltrasonico.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
-            </div>
-            <p class="mt-2 text-center">
-                <small class="text-muted">Video explicativo del circuito.</small>
-            </p>
-        </section>
-
-        <!-- SEMANA 9 -->
-        <section id="semana9" class="content-section reveal-on-scroll" data-category="sensor">
-            <h2 class="section-title">Semana 9: Nueva implementación usando un sensor PIR</h2>
-            <p class="placeholder-text">En esta clase exploramos nuevos conceptos y conectamos elementos adicionales para expandir las capacidades de nuestro proyecto usando un sensor PIR.</p>
-            
-            <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
-                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
-                    <source src="newpir.mp4" type="video/mp4">
-                    Tu navegador no soporta la reproducción de videos.
-                </video>
-            </div>
-            <p class="mt-2 text-center">
-                <small class="text-muted">Video explicativo del circuito.</small>
-            </p>
-        </section>
-    </div>
-
-    <!-- Controles Flotantes -->
-    <div class="floating-controls">
-        <!-- Punto 2: Botón Modo Oscuro/Claro -->
-        <button id="toggleDarkMode" class="btn-float" title="Cambiar Modo de Lectura">
-            <i class="bi bi-moon-stars-fill"></i>
-        </button>
-
-        <button id="scrollToTopBtn" class="btn-float btn-back-to-top" title="Volver arriba">
-            <i class="bi bi-arrow-up-short"></i>
-        </button>
-    </div>
-
-    <footer class="footer mt-auto py-3 d-flex flex-wrap justify-content-between align-items-center px-4">
-        <span class="text-white fw-bold">© 2026 Marcos Bobadilla</span>
-        <img id="logoColegio" class="colegio footer-logo" src="https://tse2.mm.bing.net/th/id/OIP.qox5AAiWc0VQcBPON196iQHaBy?r=0&rs=1&pid=ImgDetMain&o=7&rm=3">
-    </footer>
-
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
-        /* === EVENTOS BÁSICOS PREEXISTENTES === */
-        const logo = document.getElementById('logoColegio');
-        logo.addEventListener('mouseenter', () => logo.style.transform = "scale(1.2)");
-        logo.addEventListener('mouseleave', () => logo.style.transform = "scale(1)");
+        // --- 1. BASE DE DATOS LOCAL (Arrays de semanas) ---
+        const weeksData = [
+            { week: "Semana 1", value: 45 },
+            { week: "Semana 2", value: 70 },
+            { week: "Semana 3", value: 55 },
+            { week: "Semana 4", value: 90 }
+        ];
 
-        const backToTopBtn = document.getElementById('scrollToTopBtn');
-        const header = document.getElementById('mainHeader');
+        let weeklyChart;
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > header.offsetHeight) {
-                backToTopBtn.classList.add('show');
-            } else {
-                backToTopBtn.classList.remove('show');
-            }
-        });
-
-        backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        /* === PUNTO 8: SCROLL REVEAL OPTIMIZADO === */
-        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
-
-        /* === PUNTO 1: BÚSQUEDA Y FILTRADO EN TIEMPO REAL === */
-        const searchInput = document.getElementById('searchInput');
-        const sections = document.querySelectorAll('.content-section');
-
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            sections.forEach(section => {
-                const text = section.innerText.toLowerCase();
-                section.style.display = text.includes(query) ? 'block' : 'none';
-            });
-        });
-
-        function filterCategory(category, btn) {
-            document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            sections.forEach(section => {
-                if (category === 'all' || section.getAttribute('data-category') === category) {
-                    section.style.display = 'block';
-                } else {
-                    section.style.display = 'none';
+        // --- 2. INICIALIZAR GRÁFICA ---
+        function initChart() {
+            const ctx = document.getElementById('weeklyChart').getContext('2d');
+            weeklyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: weeksData.map(d => d.week),
+                    datasets: [{
+                        label: 'Rendimiento',
+                        data: weeksData.map(d => d.value),
+                        backgroundColor: 'rgba(62, 19, 254, 0.6)',
+                        borderColor: 'rgba(62, 19, 254, 1)',
+                        borderWidth: 2,
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
                 }
             });
         }
 
-        /* === PUNTO 2: MODO OSCURO / CLARO === */
-        const darkModeBtn = document.getElementById('toggleDarkMode');
-        darkModeBtn.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            const icon = darkModeBtn.querySelector('i');
-            if (document.body.classList.contains('light-mode')) {
-                icon.className = 'bi bi-sun-fill';
-            } else {
-                icon.className = 'bi bi-moon-stars-fill';
-            }
+        // --- 3. FUNCIÓN DE ACTUALIZACIÓN AUTOMÁTICA ---
+        function updateDashboard() {
+            // Recalcular métricas
+            const totalWeeks = weeksData.length;
+            const totalSum = weeksData.reduce((acc, curr) => acc + curr.value, 0);
+            const average = totalWeeks > 0 ? (totalSum / totalWeeks).toFixed(1) : 0;
+
+            // Actualizar tarjetas de interfaz (KPIs)
+            document.getElementById('kpiTotalWeeks').textContent = totalWeeks;
+            document.getElementById('kpiTotalSum').textContent = totalSum;
+            document.getElementById('kpiAverage').textContent = average;
+
+            // Actualizar la gráfica con los nuevos datos
+            weeklyChart.data.labels = weeksData.map(d => d.week);
+            weeklyChart.data.datasets[0].data = weeksData.map(d => d.value);
+            weeklyChart.update(); // <- Método clave para refrescar la gráfica
+        }
+
+        // --- 4. MANEJAR INGRESO DE NUEVAS SEMANAS ---
+        document.getElementById('weekForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const weekName = document.getElementById('weekName').value;
+            const weekValue = parseFloat(document.getElementById('weekValue').value);
+
+            // Agregar al dataset
+            weeksData.push({ week: weekName, value: weekValue });
+
+            // Actualizar interfaz
+            updateDashboard();
+
+            // Limpiar campos del formulario
+            this.reset();
         });
 
-        /* === PUNTO 9: CAMBIO DE TEMAS DE COLOR === */
-        function changeTheme(themeName) {
-            const root = document.documentElement;
-            if (themeName === 'ocean') {
-                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, rgba(0, 180, 216, 0.95) 0%, rgba(9, 9, 121, 0.95) 100%)');
-                root.style.setProperty('--accent-color', '#0077b6');
-            } else if (themeName === 'cyber') {
-                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(5, 150, 105, 0.95) 100%)');
-                root.style.setProperty('--accent-color', '#059669');
-            } else if (themeName === 'sunset') {
-                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, rgba(249, 115, 22, 0.95) 0%, rgba(194, 65, 12, 0.95) 100%)');
-                root.style.setProperty('--accent-color', '#ea580c');
+        // --- 5. CAMBIO DE TEMAS ---
+        function changeTheme(theme) {
+            const header = document.getElementById('mainHeader');
+            if (theme === 'ocean') {
+                header.style.background = 'linear-gradient(135deg, #0077b6, #00b4d8)';
+            } else if (theme === 'cyber') {
+                header.style.background = 'linear-gradient(135deg, #11998e, #38ef7d)';
             } else {
-                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%)');
-                root.style.setProperty('--accent-color', '#5a67d8');
+                header.style.background = 'linear-gradient(135deg, #3e13fe, #9d1df2)';
             }
         }
+
+        // Cargar panel al iniciar la página
+        window.onload = function() {
+            initChart();
+            updateDashboard();
+        };
     </script>
 </body>
 </html>
