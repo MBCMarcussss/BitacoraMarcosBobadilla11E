@@ -8,6 +8,23 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="icon" type="image/x-icon" href="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQlQeyzOynJH9bbjVOIbPDtWT2Jh1RAeol3ew&s">
     <style>
+        :root {
+            /* Variables de Color (Punto 9: Personalización) */
+            --primary-gradient: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            --accent-color: #5a67d8;
+            --card-bg: rgba(255, 255, 255, 0.92);
+            --text-color: #333333;
+            --subtext-color: #444444;
+            --border-color: #dddddd;
+        }
+
+        /* Punto 2: Modo Oscuro / Claro */
+        body.light-mode {
+            --card-bg: rgba(248, 249, 250, 0.95);
+            --text-color: #111111;
+            --subtext-color: #222222;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -21,9 +38,11 @@
             min-height: 100vh;
             position: relative;
             background-color: #000;
+            color: var(--text-color);
+            transition: background-color 0.3s ease;
         }
 
-        /* VIDEO DE FONDO FIJO (Solo reproduce sin moverse con el scroll) */
+        /* VIDEO DE FONDO FIJO */
         #bg-video {
             position: fixed;
             top: 0;
@@ -34,14 +53,13 @@
             z-index: -2;
         }
 
-        /* Capa traslúcida fija sobre el video */
         .video-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.35);
             z-index: -1;
         }
 
@@ -49,16 +67,19 @@
             position: absolute;
             top: 0;
             width: 100%;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+            background: var(--primary-gradient);
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 1000;
+            transition: background 0.3s ease;
         }
         
         .header-title-container {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 0;
+            padding: 1.2rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .main-title {
@@ -71,13 +92,29 @@
             text-shadow: 
                 0 0 5px #3e13fe,
                 0 0 10px #27bbfa,
-                0 0 20px #9d1df2,
-                0 0 40px #3648e4;
+                0 0 20px #9d1df2;
+        }
+
+        /* Punto 9: Selector de Temas UI */
+        .theme-picker-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .theme-picker-btn:hover {
+            background: rgba(255, 255, 255, 0.35);
         }
 
         .main-content {
-            margin-top: 120px; 
-            padding: 2rem;
+            margin-top: 110px; 
+            padding: 1.5rem;
             max-width: 1000px;
             margin-left: auto;
             margin-right: auto;
@@ -86,49 +123,109 @@
         }
 
         .content-section {
-            animation: fadeIn 0.5s ease-in;
             padding: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(6px);
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
             margin-bottom: 2rem;
+            transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
+        }
+
+        /* Punto 8: Scroll Reveal Sutil */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(25px);
+            will-change: opacity, transform;
+        }
+
+        .reveal-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Punto 10: Tarjeta de Estadísticas */
+        .stats-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Punto 1: Controles de Búsqueda y Filtros */
+        .filter-container {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .btn-filter {
+            border-radius: 20px;
+            padding: 0.3rem 0.9rem;
+            font-size: 0.85rem;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+            background: transparent;
+            transition: all 0.2s ease;
+            margin: 0.2rem;
+        }
+
+        .btn-filter.active, .btn-filter:hover {
+            background: var(--accent-color);
+            color: white;
         }
 
         .media-container {
             margin-top: 20px;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             border-radius: 8px;
             overflow: hidden;
             background-color: #000;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
         
-        /* TÍTULOS DE LAS SEMANAS SIN EFECTO NEÓN */
         .section-title {
-            color: #5a67d8;
-            margin-bottom: 1.5rem;
-            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 1.2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             text-shadow: none;
         }
 
         .placeholder-text {
             line-height: 1.6;
-            color: #444;
+            color: var(--subtext-color);
             margin-bottom: 1rem;
         }
 
-        /* FOOTER CON EL MISMO DEGRADADO Y SIN BORDE BLANCO */
         footer {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
+            background: var(--primary-gradient);
             backdrop-filter: blur(5px);
             box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
             border: none !important;
+            transition: background 0.3s ease;
         }
 
         .footer-logo {
@@ -138,31 +235,40 @@
             filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
         }
 
-        .btn-back-to-top {
+        /* Botones Flotantes (Punto 2 & Scroll Top) */
+        .floating-controls {
             position: fixed;
             bottom: 30px;
             right: 30px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        .btn-float {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-gradient);
             color: white;
             border: none;
             border-radius: 50%;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.35);
             cursor: pointer;
-            z-index: 1000;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 1.5rem;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            font-size: 1.3rem;
+            transition: transform 0.2s ease, opacity 0.3s ease;
         }
 
-        .btn-back-to-top:hover {
+        .btn-float:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 15px #27bbfa;
+        }
+
+        .btn-back-to-top {
+            opacity: 0;
+            visibility: hidden;
         }
 
         .btn-back-to-top.show {
@@ -183,12 +289,66 @@
     <header id="mainHeader">
         <div class="header-title-container">
             <h1 class="main-title">Contenido de mi página web</h1>
+            
+            <!-- Punto 9: Menú de Selección de Temas -->
+            <div class="dropdown">
+                <button class="theme-picker-btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-palette-fill me-1"></i> Tema
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <li><a class="dropdown-item" href="#" onclick="changeTheme('default')">💜 Púrpura Original</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="changeTheme('ocean')">💙 Azul Neón</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="changeTheme('cyber')">💚 Verde Ciberpunk</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="changeTheme('sunset')">🧡 Naranja Creador</a></li>
+                </ul>
+            </div>
         </div>
     </header>
 
     <div class="main-content">
+
+        <!-- Punto 10: Sección de Estadísticas -->
+        <div class="stats-card reveal-on-scroll">
+            <div class="row g-2 align-items-center">
+                <div class="col-3 stat-item">
+                    <div class="stat-number" id="totalWeeks">9</div>
+                    <div class="stat-label">Semanas</div>
+                </div>
+                <div class="col-3 stat-item border-start">
+                    <div class="stat-number">2</div>
+                    <div class="stat-label">Sensores</div>
+                </div>
+                <div class="col-3 stat-item border-start">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Prácticas</div>
+                </div>
+                <div class="col-3 stat-item border-start">
+                    <div class="stat-number"><i class="bi bi-cpu"></i></div>
+                    <div class="stat-label">Arduino UNO</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Punto 1: Búsqueda y Filtro de Semanas -->
+        <div class="filter-container reveal-on-scroll">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-6">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                        <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Buscar semana o tema (ej. Sensor, RGB)...">
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <button class="btn-filter active" onclick="filterCategory('all', this)">Todos</button>
+                    <button class="btn-filter" onclick="filterCategory('sensor', this)">Sensórica</button>
+                    <button class="btn-filter" onclick="filterCategory('sim', this)">Simulación</button>
+                    <button class="btn-filter" onclick="filterCategory('fisico', this)">Físico</button>
+                </div>
+            </div>
+        </div>
+
         <!-- SEMANA 1 -->
-        <section id="semana1" class="content-section">
+        <section id="semana1" class="content-section reveal-on-scroll" data-category="sim">
             <h2 class="section-title">Semana 1: Introducción a Arduino</h2>
             <p class="placeholder-text">En esta sección aprendimos sobre los componentes de Arduino y cómo interactuar con elementos electrónicos básicos.</p>
             
@@ -201,7 +361,7 @@
         </section>
 
         <!-- SEMANA 2 -->
-        <section id="semana2" class="content-section">
+        <section id="semana2" class="content-section reveal-on-scroll" data-category="sim">
             <h2 class="section-title">Semana 2: Primer circuito y programación</h2>
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito con Arduino UNO usando estructuras avanzadas en Tinkercad (Diseño de semáforo básico).</p>
             
@@ -217,7 +377,7 @@
         </section>
 
         <!-- SEMANA 3 -->
-        <section id="semana3" class="content-section">
+        <section id="semana3" class="content-section reveal-on-scroll" data-category="sim">
             <h2 class="section-title">Semana 3: Primer circuito y programación LED RGB</h2>
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito con un módulo RGB en Arduino UNO mediante estructuras avanzadas en Tinkercad.</p>
             
@@ -233,7 +393,7 @@
         </section>
 
         <!-- SEMANA 4 -->
-        <section id="semana4" class="content-section">
+        <section id="semana4" class="content-section reveal-on-scroll" data-category="fisico">
             <h2 class="section-title">Semana 4: Primer circuito y programación en físico</h2>
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito utilizando un LED RGB y LEDs estándar con Arduino UNO en físico.</p>
             
@@ -249,7 +409,7 @@
         </section>
 
         <!-- SEMANA 5 -->
-        <section id="semana5" class="content-section">
+        <section id="semana5" class="content-section reveal-on-scroll" data-category="fisico">
             <h2 class="section-title">Semana 5: Segundo circuito y programación en físico</h2>
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro segundo circuito enfocado en LEDs con Arduino UNO empleando estructuras avanzadas en físico.</p>
             
@@ -265,7 +425,7 @@
         </section>
 
         <!-- SEMANA 6 -->
-        <section id="semana6" class="content-section">
+        <section id="semana6" class="content-section reveal-on-scroll" data-category="sim">
             <h2 class="section-title">Semana 6: Tercer circuito y automatización</h2>
             <p class="placeholder-text">En esta clase avanzamos hacia nuevas implementaciones y lógicas de programación utilizando la función random.</p>
             
@@ -281,7 +441,7 @@
         </section>
 
         <!-- SEMANA 7 -->
-        <section id="semana7" class="content-section">
+        <section id="semana7" class="content-section reveal-on-scroll" data-category="fisico">
             <h2 class="section-title">Semana 7: Proyecto del semáforo funcional</h2>
             <p class="placeholder-text">Presentación y pruebas del sistema completo integrado para la creación de un semáforo en físico.</p>
             
@@ -297,7 +457,7 @@
         </section>
 
         <!-- SEMANA 8 -->
-        <section id="semana8" class="content-section">
+        <section id="semana8" class="content-section reveal-on-scroll" data-category="sensor">
             <h2 class="section-title">Semana 8: Circuito con sensor ultrasonico</h2>
             <p class="placeholder-text">En esta clase avanzamos hacia nuevas implementaciones y lógicas de programación utilizando un sensor ultrasonico.</p>
             
@@ -313,7 +473,7 @@
         </section>
 
         <!-- SEMANA 9 -->
-        <section id="semana9" class="content-section">
+        <section id="semana9" class="content-section reveal-on-scroll" data-category="sensor">
             <h2 class="section-title">Semana 9: Nueva implementación usando un sensor PIR</h2>
             <p class="placeholder-text">En esta clase exploramos nuevos conceptos y conectamos elementos adicionales para expandir las capacidades de nuestro proyecto usando un sensor PIR.</p>
             
@@ -329,33 +489,35 @@
         </section>
     </div>
 
-    <button id="scrollToTopBtn" class="btn-back-to-top" title="Volver arriba">
-        <i class="bi bi-arrow-up-short"></i>
-    </button>
+    <!-- Controles Flotantes -->
+    <div class="floating-controls">
+        <!-- Punto 2: Botón Modo Oscuro/Claro -->
+        <button id="toggleDarkMode" class="btn-float" title="Cambiar Modo de Lectura">
+            <i class="bi bi-moon-stars-fill"></i>
+        </button>
+
+        <button id="scrollToTopBtn" class="btn-float btn-back-to-top" title="Volver arriba">
+            <i class="bi bi-arrow-up-short"></i>
+        </button>
+    </div>
 
     <footer class="footer mt-auto py-3 d-flex flex-wrap justify-content-between align-items-center px-4">
         <span class="text-white fw-bold">© 2026 Marcos Bobadilla</span>
         <img id="logoColegio" class="colegio footer-logo" src="https://tse2.mm.bing.net/th/id/OIP.qox5AAiWc0VQcBPON196iQHaBy?r=0&rs=1&pid=ImgDetMain&o=7&rm=3">
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        /* === EVENTOS BÁSICOS PREEXISTENTES === */
         const logo = document.getElementById('logoColegio');
-
-        logo.addEventListener('mouseenter', () => {
-            logo.style.transform = "scale(1.2)";
-        });
-
-        logo.addEventListener('mouseleave', () => {
-            logo.style.transform = "scale(1)";
-        });
+        logo.addEventListener('mouseenter', () => logo.style.transform = "scale(1.2)");
+        logo.addEventListener('mouseleave', () => logo.style.transform = "scale(1)");
 
         const backToTopBtn = document.getElementById('scrollToTopBtn');
         const header = document.getElementById('mainHeader');
 
         window.addEventListener('scroll', () => {
-            const headerHeight = header.offsetHeight;
-            
-            if (window.scrollY > headerHeight) {
+            if (window.scrollY > header.offsetHeight) {
                 backToTopBtn.classList.add('show');
             } else {
                 backToTopBtn.classList.remove('show');
@@ -363,12 +525,75 @@
         });
 
         backToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        /* === PUNTO 8: SCROLL REVEAL OPTIMIZADO === */
+        const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
+
+        /* === PUNTO 1: BÚSQUEDA Y FILTRADO EN TIEMPO REAL === */
+        const searchInput = document.getElementById('searchInput');
+        const sections = document.querySelectorAll('.content-section');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            sections.forEach(section => {
+                const text = section.innerText.toLowerCase();
+                section.style.display = text.includes(query) ? 'block' : 'none';
             });
         });
-    </script>
 
+        function filterCategory(category, btn) {
+            document.querySelectorAll('.btn-filter').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            sections.forEach(section => {
+                if (category === 'all' || section.getAttribute('data-category') === category) {
+                    section.style.display = 'block';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        /* === PUNTO 2: MODO OSCURO / CLARO === */
+        const darkModeBtn = document.getElementById('toggleDarkMode');
+        darkModeBtn.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            const icon = darkModeBtn.querySelector('i');
+            if (document.body.classList.contains('light-mode')) {
+                icon.className = 'bi bi-sun-fill';
+            } else {
+                icon.className = 'bi bi-moon-stars-fill';
+            }
+        });
+
+        /* === PUNTO 9: CAMBIO DE TEMAS DE COLOR === */
+        function changeTheme(themeName) {
+            const root = document.documentElement;
+            if (themeName === 'ocean') {
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, rgba(0, 180, 216, 0.95) 0%, rgba(9, 9, 121, 0.95) 100%)');
+                root.style.setProperty('--accent-color', '#0077b6');
+            } else if (themeName === 'cyber') {
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, rgba(16, 185, 129, 0.95) 0%, rgba(5, 150, 105, 0.95) 100%)');
+                root.style.setProperty('--accent-color', '#059669');
+            } else if (themeName === 'sunset') {
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, rgba(249, 115, 22, 0.95) 0%, rgba(194, 65, 12, 0.95) 100%)');
+                root.style.setProperty('--accent-color', '#ea580c');
+            } else {
+                root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%)');
+                root.style.setProperty('--accent-color', '#5a67d8');
+            }
+        }
+    </script>
 </body>
 </html>
