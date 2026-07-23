@@ -73,9 +73,10 @@
             transition: background 0.3s ease;
         }
         
+        /* HEADER CENTRADO MEDIANTE GRID */
         .header-title-container {
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
             padding: 1.2rem 2rem;
             max-width: 1200px;
@@ -83,6 +84,8 @@
         }
 
         .main-title {
+            grid-column: 2;
+            text-align: center;
             color: white;
             font-size: 1.5rem;
             text-transform: uppercase;
@@ -93,6 +96,11 @@
                 0 0 5px #3e13fe,
                 0 0 10px #27bbfa,
                 0 0 20px #9d1df2;
+        }
+
+        .header-title-container .dropdown {
+            grid-column: 3;
+            justify-self: end;
         }
 
         /* Punto 9: Selector de Temas UI */
