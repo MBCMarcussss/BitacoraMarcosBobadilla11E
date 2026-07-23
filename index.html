@@ -23,24 +23,24 @@
             background-color: #000;
         }
 
-        /* CONFIGURACIÓN DEL VIDEO DE FONDO DESDE GITHUB */
+        /* CONFIGURACIÓN DEL VIDEO DE FONDO PARA QUE ACOMPAÑE EL SCROLL */
         #bg-video {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover; /* Cubre toda la pantalla */
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Cubre toda la extensión de la página */
             z-index: -2; /* Se coloca al fondo de la página */
         }
 
-        /* Capa traslúcida para asegurar que los textos sobre las tarjetas se lean bien */
+        /* Capa traslúcida ajustada a toda la altura del documento */
         .video-overlay {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.3);
             z-index: -1;
         }
@@ -108,10 +108,17 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
+        /* TÍTULOS DE LAS SEMANAS CON ESTILO NEÓN */
         .section-title {
-            color: #667eea;
+            color: #7b8eff;
             margin-bottom: 1.5rem;
             font-size: 2rem;
+            font-weight: bold;
+            text-shadow: 
+                0 0 5px rgba(102, 126, 234, 0.8),
+                0 0 10px rgba(102, 126, 234, 0.6),
+                0 0 15px rgba(118, 75, 162, 0.8),
+                0 0 20px rgba(118, 75, 162, 0.6);
         }
 
         .placeholder-text {
@@ -120,15 +127,18 @@
             margin-bottom: 1rem;
         }
 
+        /* FOOTER CON EL MISMO COLOR QUE EL HEADER */
         footer {
-            background-color: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%);
             backdrop-filter: blur(5px);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
         }
 
         .footer-logo {
             height: 50px;
             transition: transform 0.3s ease;
             cursor: pointer;
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
         }
 
         .btn-back-to-top {
@@ -166,7 +176,7 @@
 </head>
 <body>
 
-    <!-- REEMPLAZA "NRE_DE_TU_VIDEO.mp4" CON EL NOMBRE EXACTO DEL ARCHIVO SUBIDO A GITHUB -->
+    <!-- VIDEO DE FONDO QUE ACOMPAÑA EL DESPLAZAMIENTO -->
     <video autoplay loop muted playsinline id="bg-video">
         <source src="snoopyfondovideo.mp4" type="video/mp4">
         Tu navegador no soporta el video de fondo.
@@ -326,8 +336,8 @@
         <i class="bi bi-arrow-up-short"></i>
     </button>
 
-    <footer class="footer mt-auto py-3 border-top d-flex flex-wrap justify-content-between align-items-center px-4">
-        <span class="text-muted">© 2026 Marcos Bobadilla</span>
+    <footer class="footer mt-auto py-3 border-top border-0 d-flex flex-wrap justify-content-between align-items-center px-4">
+        <span class="text-white fw-bold">© 2026 Marcos Bobadilla</span>
         <img id="logoColegio" class="colegio footer-logo" src="https://tse2.mm.bing.net/th/id/OIP.qox5AAiWc0VQcBPON196iQHaBy?r=0&rs=1&pid=ImgDetMain&o=7&rm=3">
     </footer>
 
