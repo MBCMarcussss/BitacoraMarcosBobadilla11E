@@ -26,10 +26,12 @@
             --border-color: #444444;
         }
 
-        * {
+        /* [PUNTO 5] TRANSICIONES SUAVES AL CAMBIAR DE TEMA */
+        *, *::before, *::after {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
         }
 
         body {
@@ -40,7 +42,28 @@
             position: relative;
             background-color: #000;
             color: var(--text-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* [PUNTO 13] PANTALLA DE CARGA (LOADER SPINNER) */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #0d0d11;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
         }
 
         /* VIDEO DE FONDO FIJO */
@@ -71,7 +94,6 @@
             background: var(--primary-gradient);
             box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 1000;
-            transition: background 0.3s ease;
         }
         
         .header-title-container {
@@ -102,7 +124,6 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.2s ease;
         }
 
         .audio-control-btn:hover {
@@ -166,7 +187,6 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            transition: opacity 0.2s ease;
         }
 
         .btn-audio-action:hover {
@@ -215,7 +235,6 @@
             cursor: pointer;
             backdrop-filter: blur(5px);
             font-size: 0.9rem;
-            transition: all 0.2s ease;
         }
 
         .theme-picker-btn:hover {
@@ -239,7 +258,6 @@
             border-radius: 12px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.25);
             margin-bottom: 2rem;
-            transition: transform 0.3s ease, opacity 0.3s ease, background 0.3s ease;
         }
 
         .reveal-on-scroll {
@@ -260,7 +278,6 @@
             padding: 1.2rem;
             margin-bottom: 1.5rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: background 0.3s ease;
         }
 
         .stat-item {
@@ -288,7 +305,6 @@
             padding: 1rem;
             margin-bottom: 2rem;
             box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            transition: background 0.3s ease;
         }
 
         .btn-filter {
@@ -298,7 +314,6 @@
             border: 1px solid var(--accent-color);
             color: var(--accent-color);
             background: transparent;
-            transition: all 0.2s ease;
             margin: 0.2rem;
         }
 
@@ -313,14 +328,44 @@
             border-radius: 8px;
             overflow: hidden;
             background-color: #000;
+            position: relative; /* Para posicionar el botón de Fullscreen */
+        }
+
+        /* [PUNTO 11] BOTÓN PANTALLA COMPLETA EN MEDIA CONTAINER */
+        .btn-fullscreen {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            z-index: 10;
+            backdrop-filter: blur(4px);
+        }
+        .btn-fullscreen:hover {
+            background: rgba(0, 0, 0, 0.9);
+            color: #27bbfa;
         }
         
         .section-title {
             color: var(--accent-color);
-            margin-bottom: 1.2rem;
+            margin-bottom: 0.4rem;
             font-size: 1.8rem;
             font-weight: bold;
             text-shadow: none;
+        }
+
+        /* [PUNTO 15] HASHTAGS AUTOMÁTICOS */
+        .auto-hashtag {
+            display: inline-block;
+            font-size: 0.9rem;
+            color: #888888;
+            font-weight: bold;
+            margin-bottom: 0.8rem;
         }
 
         .placeholder-text {
@@ -329,17 +374,43 @@
             margin-bottom: 1rem;
         }
 
+        /* [PUNTO 16] BOTÓN DE LIKES EN TARJETAS */
+        .card-footer-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border-color);
+        }
+
+        .btn-like {
+            background: transparent;
+            border: 1px solid #ff4757;
+            color: #ff4757;
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-like:hover, .btn-like.liked {
+            background: #ff4757;
+            color: white;
+        }
+
         footer {
             background: var(--primary-gradient);
             backdrop-filter: blur(5px);
             box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
             border: none !important;
-            transition: background 0.3s ease;
         }
 
         .footer-logo {
             height: 50px;
-            transition: transform 0.3s ease;
             cursor: pointer;
             filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.3));
         }
@@ -367,7 +438,6 @@
             justify-content: center;
             align-items: center;
             font-size: 1.3rem;
-            transition: transform 0.2s ease, opacity 0.3s ease;
         }
 
         .btn-float:hover {
@@ -386,6 +456,12 @@
     </style>
 </head>
 <body>
+
+    <!-- [PUNTO 13] SPINNER DE CARGA -->
+    <div id="preloader">
+        <div class="spinner-border text-info mb-3" style="width: 3rem; height: 3rem;" role="status"></div>
+        <h5 class="fw-light">Cargando Bitácora de Arduino...</h5>
+    </div>
 
     <!-- VIDEO DE FONDO FIJO -->
     <video autoplay loop muted playsinline id="bg-video">
@@ -447,7 +523,7 @@
 
     <div class="main-content" id="mainContentContainer">
 
-        <!-- Sección de Estadísticas (Conteo Dinámico) -->
+        <!-- Sección de Estadísticas -->
         <div class="stats-card reveal-on-scroll">
             <div class="row g-2 align-items-center">
                 <div class="col-3 stat-item">
@@ -475,7 +551,7 @@
                 <div class="col-md-6">
                     <div class="input-group input-group-sm">
                         <span class="input-group-text bg-transparent border-end-0 text-muted"><i class="bi bi-search"></i></span>
-                        <input type="text" id="searchInput" class="form-control border-start-0 bg-transparent text-reset" placeholder="Buscar semana o tema (ej. Sensor, RGB)...">
+                        <input type="text" id="searchInput" class="form-control border-start-0 bg-transparent text-reset" placeholder="Buscar semana, hashtag (#) o tema...">
                     </div>
                 </div>
                 <div class="col-md-6 text-md-end">
@@ -487,12 +563,14 @@
             </div>
         </div>
 
-        <!-- SEMANAS REVISADAS Y CORREGIDAS -->
-        <section id="semana1" class="content-section reveal-on-scroll" data-category="sim">
+        <!-- SEMANAS CON ETIQUETAS AUTOMÁTICAS DATA-TAGS -->
+        <section id="semana1" class="content-section reveal-on-scroll" data-category="sim" data-tags="pdf introduccion componentes basico teoric">
             <h2 class="section-title">Semana 1: Introducción a Arduino</h2>
+            <div class="auto-hashtag"></div>
             <p class="placeholder-text">En esta sección aprendimos sobre los componentes de Arduino y cómo interactuar con elementos electrónicos básicos a través de material conceptual.</p>
             
             <div class="media-container">
+                <button class="btn-fullscreen" onclick="toggleFullscreen(this)"><i class="bi bi-arrows-fullscreen"></i> Pantalla completa</button>
                 <embed src="Introducción Arduino (3).pdf" type="application/pdf" width="100%" height="600px" />
             </div>
             <p class="mt-2 text-center">
@@ -500,11 +578,13 @@
             </p>
         </section>
 
-        <section id="semana2" class="content-section reveal-on-scroll" data-category="sim">
+        <section id="semana2" class="content-section reveal-on-scroll" data-category="sim" data-tags="semaforo tinkercad circuito simulacion led">
             <h2 class="section-title">Semana 2: Primer circuito y programación</h2>
+            <div class="auto-hashtag"></div>
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito con Arduino UNO usando estructuras avanzadas en Tinkercad (Diseño de semáforo básico en simulador).</p>
             
             <div class="media-container">
+                <button class="btn-fullscreen" onclick="toggleFullscreen(this)"><i class="bi bi-arrows-fullscreen"></i> Pantalla completa</button>
                 <video width="100%" height="auto" controls>
                     <source src="Semana 2 TICS.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
@@ -515,11 +595,13 @@
             </p>
         </section>
 
-        <section id="semana3" class="content-section reveal-on-scroll" data-category="sim">
+        <section id="semana3" class="content-section reveal-on-scroll" data-category="sim" data-tags="rgb modulo colores tinkercad simulacion">
             <h2 class="section-title">Semana 3: Primer circuito y programación LED RGB</h2>
+            <div class="auto-hashtag"></div>
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito con un módulo RGB en Arduino UNO mediante estructuras avanzadas en Tinkercad.</p>
             
             <div class="media-container">
+                <button class="btn-fullscreen" onclick="toggleFullscreen(this)"><i class="bi bi-arrows-fullscreen"></i> Pantalla completa</button>
                 <video width="100%" height="auto" controls>
                     <source src="boba.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
@@ -530,11 +612,13 @@
             </p>
         </section>
 
-        <section id="semana4" class="content-section reveal-on-scroll" data-category="fisico">
+        <section id="semana4" class="content-section reveal-on-scroll" data-category="fisico" data-tags="fisico rgb leds hardware componentes">
             <h2 class="section-title">Semana 4: Primer circuito y programación en físico</h2>
+            <div class="auto-hashtag"></div>
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito utilizando un LED RGB y LEDs estándar con Arduino UNO en físico.</p>
             
             <div class="media-container">
+                <button class="btn-fullscreen" onclick="toggleFullscreen(this)"><i class="bi bi-arrows-fullscreen"></i> Pantalla completa</button>
                 <video width="100%" height="auto" controls>
                     <source src="Videos3.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
@@ -545,11 +629,13 @@
             </p>
         </section>
 
-        <section id="semana5" class="content-section reveal-on-scroll" data-category="fisico">
+        <section id="semana5" class="content-section reveal-on-scroll" data-category="fisico" data-tags="segundo circuito leds avanzado fisico">
             <h2 class="section-title">Semana 5: Segundo circuito y programación en físico</h2>
+            <div class="auto-hashtag"></div>
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro segundo circuito enfocado en LEDs con Arduino UNO empleando estructuras avanzadas en físico.</p>
             
             <div class="media-container">
+                <button class="btn-fullscreen" onclick="toggleFullscreen(this)"><i class="bi bi-arrows-fullscreen"></i> Pantalla completa</button>
                 <video width="100%" height="auto" controls>
                     <source src="VideoSemana4.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
@@ -560,11 +646,13 @@
             </p>
         </section>
 
-        <section id="semana6" class="content-section reveal-on-scroll" data-category="fisico">
+        <section id="semana6" class="content-section reveal-on-scroll" data-category="fisico" data-tags="random randomseed automatizacion aleatorio fisico">
             <h2 class="section-title">Semana 6: Tercer circuito y automatización en físico</h2>
+            <div class="auto-hashtag"></div>
             <p class="placeholder-text">En esta clase avanzamos hacia nuevas implementaciones y lógicas de programación en físico utilizando la función random.</p>
             
             <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
+                <button class="btn-fullscreen" onclick="toggleFullscreen(this)"><i class="bi bi-arrows-fullscreen"></i> Pantalla completa</button>
                 <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
                     <source src="randomseed-tics.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
@@ -575,11 +663,13 @@
             </p>
         </section>
 
-        <section id="semana7" class="content-section reveal-on-scroll" data-category="fisico">
+        <section id="semana7" class="content-section reveal-on-scroll" data-category="fisico" data-tags="proyecto semaforo integrado funcional fisico">
             <h2 class="section-title">Semana 7: Proyecto del semáforo funcional</h2>
+            <div class="auto-hashtag"></div>
             <p class="placeholder-text">Presentación y pruebas del sistema completo integrado para la creación de un semáforo en físico.</p>
             
             <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
+                <button class="btn-fullscreen" onclick="toggleFullscreen(this)"><i class="bi bi-arrows-fullscreen"></i> Pantalla completa</button>
                 <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
                     <source src="semaforo-tics.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
@@ -590,11 +680,13 @@
             </p>
         </section>
 
-        <section id="semana8" class="content-section reveal-on-scroll" data-category="sensor fisico">
+        <section id="semana8" class="content-section reveal-on-scroll" data-category="sensor fisico" data-tags="sensor ultrasonico distancia HC-SR04 fisico">
             <h2 class="section-title">Semana 8: Circuito físico con sensor ultrasónico</h2>
+            <div class="auto-hashtag"></div>
             <p class="placeholder-text">En esta clase avanzamos hacia nuevas implementaciones y lógicas de programación utilizando un sensor ultrasónico en el circuito físico.</p>
             
             <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
+                <button class="btn-fullscreen" onclick="toggleFullscreen(this)"><i class="bi bi-arrows-fullscreen"></i> Pantalla completa</button>
                 <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
                     <source src="SensorUltrasonico.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
@@ -605,11 +697,13 @@
             </p>
         </section>
 
-        <section id="semana9" class="content-section reveal-on-scroll" data-category="sensor sim">
+        <section id="semana9" class="content-section reveal-on-scroll" data-category="sensor sim" data-tags="sensor pir movimiento tinkercad simulacion">
             <h2 class="section-title">Semana 9: Nueva implementación usando un sensor PIR en simulador Tinkercad</h2>
+            <div class="auto-hashtag"></div>
             <p class="placeholder-text">En esta clase exploramos nuevos conceptos y conectamos elementos adicionales para expandir las capacidades de nuestro proyecto usando un sensor PIR en una simulación.</p>
             
             <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
+                <button class="btn-fullscreen" onclick="toggleFullscreen(this)"><i class="bi bi-arrows-fullscreen"></i> Pantalla completa</button>
                 <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
                     <source src="newpir.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
@@ -639,31 +733,113 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        /* === AUTOMATIZACIÓN DINÁMICA DE ELEMENTOS Y FILTROS === */
-        
-        // Actualizar dinámicamente las estadísticas al cargar la página
-        function updateDynamicStats() {
+        /* === [PUNTO 13] OCULTAR PRELOADER === */
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            if (preloader) preloader.classList.add('hidden');
+        });
+
+        /* === AUTOMATIZACIÓN DINÁMICA & HASHTAGS [PUNTO 15 & 16] === */
+        function initAutomatedElements() {
             const sections = document.querySelectorAll('.content-section');
+            
+            // Estadísticas generales
             const totalWeeksElem = document.getElementById('totalWeeks');
-            if (totalWeeksElem) {
-                totalWeeksElem.innerText = sections.length;
+            if (totalWeeksElem) totalWeeksElem.innerText = sections.length;
+
+            const physicalElem = document.getElementById('totalPhysicalCircuits');
+            let physicalCount = 0;
+
+            sections.forEach((section, index) => {
+                // Conteo físicos
+                const categories = (section.getAttribute('data-category') || '').split(' ');
+                if (categories.includes('fisico')) physicalCount++;
+
+                // Generar Hashtag Automático basado en Título o ID
+                const titleElem = section.querySelector('.section-title');
+                const hashtagContainer = section.querySelector('.auto-hashtag');
+                if (titleElem && hashtagContainer) {
+                    const cleanTitle = titleElem.innerText
+                        .toLowerCase()
+                        .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // quita tildes
+                        .replace(/[^a-z0-9 ]/g, "")
+                        .trim()
+                        .replace(/\s+/g, '-');
+                    hashtagContainer.innerText = `#${cleanTitle}`;
+                }
+
+                // Generar Botón de Likes (Punto 16) si no existe
+                if (!section.querySelector('.card-footer-actions')) {
+                    const secId = section.id || `semana-${index+1}`;
+                    const savedLikes = localStorage.getItem(`likes_${secId}`) || 0;
+                    const isLiked = localStorage.getItem(`liked_${secId}`) === 'true';
+
+                    const footerActions = document.createElement('div');
+                    footerActions.className = 'card-footer-actions';
+                    footerActions.innerHTML = `
+                        <button class="btn-like ${isLiked ? 'liked' : ''}" onclick="toggleLike('${secId}', this)">
+                            <i class="bi ${isLiked ? 'bi-heart-fill' : 'bi-heart'}"></i>
+                            <span class="like-count">${savedLikes}</span> Me gusta
+                        </button>
+                    `;
+                    section.appendChild(footerActions);
+                }
+            });
+
+            if (physicalElem) physicalElem.innerText = physicalCount;
+        }
+
+        /* === [PUNTO 16] LÓGICA DE LIKES === */
+        function toggleLike(sectionId, btn) {
+            let count = parseInt(btn.querySelector('.like-count').innerText) || 0;
+            const icon = btn.querySelector('i');
+            const isLiked = btn.classList.contains('liked');
+
+            if (isLiked) {
+                btn.classList.remove('liked');
+                icon.className = 'bi bi-heart';
+                count = Math.max(0, count - 1);
+                localStorage.setItem(`liked_${sectionId}`, 'false');
+            } else {
+                btn.classList.add('liked');
+                icon.className = 'bi bi-heart-fill';
+                count += 1;
+                localStorage.setItem(`liked_${sectionId}`, 'true');
             }
 
-            // Conteo dinámico de circuitos en físico
-            const physicalElem = document.getElementById('totalPhysicalCircuits');
-            if (physicalElem) {
-                let physicalCount = 0;
-                sections.forEach(section => {
-                    const categories = (section.getAttribute('data-category') || '').split(' ');
-                    if (categories.includes('fisico')) {
-                        physicalCount++;
-                    }
-                });
-                physicalElem.innerText = physicalCount;
+            btn.querySelector('.like-count').innerText = count;
+            localStorage.setItem(`likes_${sectionId}`, count);
+        }
+
+        /* === [PUNTO 11] PANTALLA COMPLETA === */
+        function toggleFullscreen(button) {
+            const container = button.closest('.media-container');
+            if (!container) return;
+
+            if (!document.fullscreenElement) {
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                }
+                button.innerHTML = '<i class="bi bi-fullscreen-exit"></i> Salir de pantalla completa';
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+                button.innerHTML = '<i class="bi bi-arrows-fullscreen"></i> Pantalla completa';
             }
         }
 
-        /* === LÓGICA DEL REPRODUCTOR DE AUDIO E INTERFAZ FLOTANTE === */
+        document.addEventListener('fullscreenchange', () => {
+            if (!document.fullscreenElement) {
+                document.querySelectorAll('.btn-fullscreen').forEach(btn => {
+                    btn.innerHTML = '<i class="bi bi-arrows-fullscreen"></i> Pantalla completa';
+                });
+            }
+        });
+
+        /* === LÓGICA DE AUDIO E INTERRUPCIÓN AUTOMÁTICA [PUNTO 14] === */
         const audio = document.getElementById('bgAudio');
         const popover = document.getElementById('musicPopover');
         const audioIcon = document.getElementById('audioIcon');
@@ -695,19 +871,24 @@
             }
         }
 
-        // Cierra la mini ventana al hacer clic fuera de ella
+        // Auto-Pausa de música al reproducir cualquier video de la semana (Punto 14)
+        document.querySelectorAll('video').forEach(video => {
+            if (video.id !== 'bg-video') {
+                video.addEventListener('play', () => {
+                    if (audio && !audio.paused) {
+                        pauseAudio();
+                    }
+                });
+            }
+        });
+
         document.addEventListener('click', (event) => {
             if (!event.target.closest('.audio-player-container')) {
                 popover.classList.remove('show');
             }
         });
 
-        const logo = document.getElementById('logoColegio');
-        if (logo) {
-            logo.addEventListener('mouseenter', () => logo.style.transform = "scale(1.2)");
-            logo.addEventListener('mouseleave', () => logo.style.transform = "scale(1)");
-        }
-
+        /* === SCROLL Y BOTÓN ARRIBA === */
         const backToTopBtn = document.getElementById('scrollToTopBtn');
         const header = document.getElementById('mainHeader');
 
@@ -723,7 +904,7 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // Configuración de animación al hacer scroll (auto-detecta nuevas semanas)
+        /* === ANIMACIONES EN SCROLL === */
         const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -50px 0px" };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -737,16 +918,21 @@
             document.querySelectorAll('.reveal-on-scroll').forEach(el => observer.observe(el));
         }
 
-        /* === BÚSQUEDA Y FILTRADO AUTOMÁTICO === */
+        /* === BÚSQUEDA INTELIGENTE CON HASHTAGS Y DATA-TAGS [PUNTO 15] === */
         const searchInput = document.getElementById('searchInput');
 
         if (searchInput) {
             searchInput.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase();
+                const query = e.target.value.toLowerCase().trim();
                 const sections = document.querySelectorAll('.content-section');
+                
                 sections.forEach(section => {
                     const text = section.innerText.toLowerCase();
-                    section.style.display = text.includes(query) ? 'block' : 'none';
+                    const tags = (section.getAttribute('data-tags') || '').toLowerCase();
+                    const hashtag = (section.querySelector('.auto-hashtag')?.innerText || '').toLowerCase();
+
+                    const matches = text.includes(query) || tags.includes(query) || hashtag.includes(query);
+                    section.style.display = matches ? 'block' : 'none';
                 });
             });
         }
@@ -766,13 +952,12 @@
             });
         }
 
-        /* === CAMBIO DE MODO OSCURO A CLARO / CONTRASTE DE TARJETAS === */
+        /* === CAMBIO DE TEMA Y MODO OSCURO === */
         const darkModeBtn = document.getElementById('toggleDarkMode');
         if (darkModeBtn) {
             darkModeBtn.addEventListener('click', () => {
                 document.body.classList.toggle('dark-mode');
                 const icon = darkModeBtn.querySelector('i');
-                
                 if (document.body.classList.contains('dark-mode')) {
                     icon.className = 'bi bi-moon-stars-fill';
                 } else {
@@ -798,9 +983,9 @@
             }
         }
 
-        // Inicialización al cargar la página
+        // Inicialización al cargar el DOM
         document.addEventListener('DOMContentLoaded', () => {
-            updateDynamicStats();
+            initAutomatedElements();
             observeSections();
         });
     </script>
