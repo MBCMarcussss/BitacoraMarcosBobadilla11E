@@ -39,7 +39,56 @@
             background-color: #000;
             color: var(--text-color);
             transition: background-color 0.3s ease, color 0.3s ease;
+            overflow-x: hidden;
         }
+
+        /* === PANTALLA DE CARGA (LOADER) === */
+        #page-loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0b0c10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 99999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #page-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #27bbfa;
+            border-right: 4px solid #9d1df2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(39, 187, 250, 0.3);
+        }
+        .loader-text {
+            color: #ffffff;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+            animation: pulseText 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes pulseText {
+            0% { opacity: 0.4; }
+            100% { opacity: 1; }
+        }
+
         /* VIDEO DE FONDO FIJO */
         #bg-video {
             position: fixed;
@@ -344,6 +393,12 @@
 </head>
 <body>
 
+    <!-- PANTALLA DE CARGA (LOADER) -->
+    <div id="page-loader">
+        <div class="loader-spinner"></div>
+        <div class="loader-text">Cargando Bitácora...</div>
+    </div>
+
     <!-- VIDEO DE FONDO FIJO -->
     <video autoplay loop muted playsinline id="bg-video">
         <source src="snoopyfondovideo.mp4" type="video/mp4">
@@ -462,7 +517,7 @@
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito con Arduino UNO usando estructuras avanzadas en Tinkercad (Diseño de semáforo básico en simulador).</p>
             
             <div class="media-container">
-                <video width="100%" height="auto" controls>
+                <video width="100%" height="auto" controls preload="metadata">
                     <source src="Semana 2 TICS.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
@@ -477,7 +532,7 @@
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito con un módulo RGB en Arduino UNO mediante estructuras avanzadas en Tinkercad.</p>
             
             <div class="media-container">
-                <video width="100%" height="auto" controls>
+                <video width="100%" height="auto" controls preload="metadata">
                     <source src="boba.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
@@ -492,7 +547,7 @@
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro primer circuito utilizando un LED RGB y LEDs estándar con Arduino UNO en físico.</p>
             
             <div class="media-container">
-                <video width="100%" height="auto" controls>
+                <video width="100%" height="auto" controls preload="metadata">
                     <source src="Videos3.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
@@ -507,7 +562,7 @@
             <p class="placeholder-text">En esta clase exploramos cómo dar vida a nuestro segundo circuito enfocado en LEDs con Arduino UNO empleando estructuras avanzadas en físico.</p>
             
             <div class="media-container">
-                <video width="100%" height="auto" controls>
+                <video width="100%" height="auto" controls preload="metadata">
                     <source src="VideoSemana4.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
@@ -522,7 +577,7 @@
             <p class="placeholder-text">En esta clase avanzamos hacia nuevas implementaciones y lógicas de programación en físico utilizando la función random.</p>
             
             <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
-                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
+                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls preload="metadata">
                     <source src="randomseed-tics.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
@@ -537,7 +592,7 @@
             <p class="placeholder-text">Presentación y pruebas del sistema completo integrado para la creación de un semáforo en físico.</p>
             
             <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
-                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
+                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls preload="metadata">
                     <source src="semaforo-tics.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
@@ -552,7 +607,7 @@
             <p class="placeholder-text">En esta clase avanzamos hacia nuevas implementaciones y lógicas de programación utilizando un sensor ultrasónico en el circuito físico.</p>
             
             <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
-                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
+                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls preload="metadata">
                     <source src="SensorUltrasonico.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
@@ -567,7 +622,7 @@
             <p class="placeholder-text">En esta clase exploramos nuevos conceptos y conectamos elementos adicionales para expandir las capacidades de nuestro proyecto usando un sensor PIR en una simulación.</p>
             
             <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
-                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls>
+                <video style="width: 100%; max-height: 450px; object-fit: contain;" controls preload="metadata">
                     <source src="newpir.mp4" type="video/mp4">
                     Tu navegador no soporta la reproducción de videos.
                 </video>
@@ -596,6 +651,17 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        /* === OCULTAR PANTALLA DE CARGA (LOADER) === */
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('page-loader');
+            if (loader) {
+                // Pequeño retardo para dar suavidad visual
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                }, 300);
+            }
+        });
+
         /* === AUTOMATIZACIÓN DINÁMICA DE ELEMENTOS Y FILTROS === */
         
         // Actualizar dinámicamente las estadísticas al cargar la página
