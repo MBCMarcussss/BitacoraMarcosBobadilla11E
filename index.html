@@ -504,7 +504,7 @@
         </div>
 
         <!-- SEMANAS REVISADAS Y CORREGIDAS -->
-        <section id="semana1" class="content-section reveal-on-scroll" data-category="sim">
+        <section id="semana1" class="content-section reveal-on-scroll" data-category="sim" data-stat-exclude="true">
             <h2 class="section-title">Semana 1: Introducción a Arduino</h2>
             <p class="placeholder-text">En esta sección aprendimos sobre los componentes de Arduino y cómo interactuar con elementos electrónicos básicos a través de material conceptual.</p>
             
@@ -700,6 +700,12 @@
             let simCount = 0;
 
             sections.forEach(section => {
+                // Si la sección está marcada para excluirse del conteo de estadísticas
+                // (ej. la Semana 1, que solo tiene un PDF y no un circuito real), se omite.
+                if (section.getAttribute('data-stat-exclude') === 'true') {
+                    return;
+                }
+
                 const categories = (section.getAttribute('data-category') || '').split(' ');
                 if (categories.includes('fisico')) {
                     physicalCount++;
