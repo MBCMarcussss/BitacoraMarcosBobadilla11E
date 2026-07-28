@@ -462,19 +462,23 @@
         <!-- Sección de Estadísticas (Conteo Dinámico) -->
         <div class="stats-card reveal-on-scroll">
             <div class="row g-2 align-items-center">
-                <div class="col-3 stat-item">
+                <div class="col stat-item">
                     <div class="stat-number" id="totalWeeks">0</div>
                     <div class="stat-label">Semanas</div>
                 </div>
-                <div class="col-3 stat-item border-start">
+                <div class="col stat-item border-start">
                     <div class="stat-number">2</div>
                     <div class="stat-label">Sensores</div>
                 </div>
-                <div class="col-3 stat-item border-start">
+                <div class="col stat-item border-start">
                     <div class="stat-number" id="totalPhysicalCircuits">0</div>
                     <div class="stat-label">Circ. Físicos</div>
                 </div>
-                <div class="col-3 stat-item border-start">
+                <div class="col stat-item border-start">
+                    <div class="stat-number" id="totalSimCircuits">0</div>
+                    <div class="stat-label">Circ. Simulador</div>
+                </div>
+                <div class="col stat-item border-start">
                     <div class="stat-number"><i class="bi bi-cpu"></i></div>
                     <div class="stat-label">Arduino UNO</div>
                 </div>
@@ -689,15 +693,27 @@
 
             // Conteo dinámico de circuitos en físico
             const physicalElem = document.getElementById('totalPhysicalCircuits');
+            // Conteo dinámico de circuitos en simulador (Tinkercad / online)
+            const simElem = document.getElementById('totalSimCircuits');
+
+            let physicalCount = 0;
+            let simCount = 0;
+
+            sections.forEach(section => {
+                const categories = (section.getAttribute('data-category') || '').split(' ');
+                if (categories.includes('fisico')) {
+                    physicalCount++;
+                }
+                if (categories.includes('sim')) {
+                    simCount++;
+                }
+            });
+
             if (physicalElem) {
-                let physicalCount = 0;
-                sections.forEach(section => {
-                    const categories = (section.getAttribute('data-category') || '').split(' ');
-                    if (categories.includes('fisico')) {
-                        physicalCount++;
-                    }
-                });
                 physicalElem.innerText = physicalCount;
+            }
+            if (simElem) {
+                simElem.innerText = simCount;
             }
         }
 
