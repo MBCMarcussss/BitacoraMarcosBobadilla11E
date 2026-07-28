@@ -18,6 +18,10 @@
             --border-color: #dddddd;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         /* MODO OSCURO */
         body.dark-mode {
             --card-bg: rgba(20, 20, 25, 0.92);
@@ -40,6 +44,12 @@
             color: var(--text-color);
             transition: background-color 0.3s ease, color 0.3s ease;
             overflow-x: hidden;
+
+            /* === VARIABLES DE ACCESIBILIDAD === */
+            --font-scale: 1;
+            --content-font-weight: 400;
+            --content-letter-spacing: normal;
+            --content-line-height: 1.6;
         }
 
         /* === PANTALLA DE CARGA (LOADER) === */
@@ -256,6 +266,7 @@
             margin-right: auto;
             flex: 1 0 auto;
             width: 100%;
+            transition: margin-top 0.3s ease;
         }
         .content-section {
             padding: 2rem;
@@ -287,6 +298,7 @@
         .stat-item {
             text-align: center;
             padding: 0.5rem;
+            cursor: help;
         }
         .stat-number {
             font-size: 1.6rem;
@@ -332,14 +344,25 @@
         .section-title {
             color: var(--accent-color);
             margin-bottom: 1.2rem;
-            font-size: 1.8rem;
+            font-size: calc(1.8rem * var(--font-scale));
             font-weight: bold;
             text-shadow: none;
+            display: flex;
+            align-items: center;
+            transition: font-size 0.2s ease;
+        }
+        .section-title .cat-icon {
+            margin-right: 10px;
+            font-size: 0.85em;
         }
         .placeholder-text {
-            line-height: 1.6;
+            font-size: calc(1rem * var(--font-scale));
+            font-weight: var(--content-font-weight);
+            letter-spacing: var(--content-letter-spacing);
+            line-height: var(--content-line-height);
             color: var(--subtext-color);
             margin-bottom: 1rem;
+            transition: font-size 0.2s ease, font-weight 0.2s ease, letter-spacing 0.2s ease, line-height 0.2s ease;
         }
         footer {
             background: var(--primary-gradient);
@@ -388,6 +411,161 @@
         .btn-back-to-top.show {
             opacity: 1;
             visibility: visible;
+        }
+
+        /* === #1: ÍNDICE LATERAL FLOTANTE (TOC) === */
+        .toc-sidebar {
+            position: fixed;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--card-bg);
+            backdrop-filter: blur(8px);
+            border-radius: 14px;
+            padding: 0.8rem 0.6rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+            z-index: 900;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.3s ease;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .toc-title {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--subtext-color);
+            margin-bottom: 4px;
+            font-weight: bold;
+            text-align: center;
+        }
+        .toc-link {
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: transparent;
+            border: 1.5px solid var(--accent-color);
+            color: var(--accent-color);
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .toc-link:hover {
+            transform: scale(1.15);
+            background: rgba(90, 103, 216, 0.2);
+        }
+        .toc-link.active {
+            background: var(--accent-color);
+            color: #fff;
+            transform: scale(1.15);
+        }
+        @media (max-width: 991px) {
+            .toc-sidebar {
+                display: none;
+            }
+        }
+
+        /* === #12: BURBUJA DE ACCESIBILIDAD === */
+        .accessibility-container {
+            position: relative;
+        }
+        .accessibility-popover {
+            display: none;
+            position: absolute;
+            bottom: 0;
+            right: 60px;
+            width: 250px;
+            background: rgba(20, 20, 25, 0.9);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            z-index: 1100;
+            color: #ffffff;
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        .accessibility-popover.show {
+            display: block;
+        }
+        .a11y-popover-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .a11y-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.7rem;
+            font-size: 0.78rem;
+            gap: 8px;
+        }
+        .a11y-btn-group {
+            display: flex;
+            gap: 4px;
+        }
+        .a11y-btn-group button,
+        .a11y-toggle-btn {
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 0.25rem 0.55rem;
+            border-radius: 12px;
+            font-size: 0.72rem;
+            cursor: pointer;
+            transition: opacity 0.2s ease, background 0.2s ease;
+            white-space: nowrap;
+        }
+        .a11y-btn-group button:hover,
+        .a11y-toggle-btn:hover {
+            opacity: 0.85;
+        }
+        .a11y-toggle-btn.active {
+            background: #10b981;
+        }
+        .a11y-reset-btn {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+            padding: 0.35rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            margin-top: 0.3rem;
+            transition: background 0.2s ease;
+        }
+        .a11y-reset-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* === #22: MODO PRESENTACIÓN === */
+        body.presentation-mode header,
+        body.presentation-mode footer,
+        body.presentation-mode .stats-card,
+        body.presentation-mode .filter-container,
+        body.presentation-mode .toc-sidebar {
+            display: none !important;
+        }
+        body.presentation-mode .main-content {
+            margin-top: 30px;
+        }
+        body.presentation-mode .content-section {
+            max-width: 850px;
+            margin-left: auto;
+            margin-right: auto;
         }
     </style>
 </head>
@@ -457,28 +635,33 @@
         </div>
     </header>
 
+    <!-- === #1: ÍNDICE LATERAL FLOTANTE (TOC) === -->
+    <nav class="toc-sidebar" id="tocSidebar" aria-label="Índice de semanas">
+        <!-- Se llena dinámicamente vía JS -->
+    </nav>
+
     <div class="main-content" id="mainContentContainer">
 
         <!-- Sección de Estadísticas (Conteo Dinámico) -->
         <div class="stats-card reveal-on-scroll">
             <div class="row g-2 align-items-center">
-                <div class="col stat-item">
+                <div class="col stat-item" data-bs-toggle="tooltip" data-bs-placement="top" title="Número total de semanas registradas en la bitácora">
                     <div class="stat-number" id="totalWeeks">0</div>
                     <div class="stat-label">Semanas</div>
                 </div>
-                <div class="col stat-item border-start">
+                <div class="col stat-item border-start" data-bs-toggle="tooltip" data-bs-placement="top" title="Cantidad de tipos de sensores utilizados a lo largo del curso (ultrasónico y PIR)">
                     <div class="stat-number">2</div>
                     <div class="stat-label">Sensores</div>
                 </div>
-                <div class="col stat-item border-start">
+                <div class="col stat-item border-start" data-bs-toggle="tooltip" data-bs-placement="top" title="Circuitos armados y probados con componentes reales en Arduino">
                     <div class="stat-number" id="totalPhysicalCircuits">0</div>
                     <div class="stat-label">Circ. Físicos</div>
                 </div>
-                <div class="col stat-item border-start">
+                <div class="col stat-item border-start" data-bs-toggle="tooltip" data-bs-placement="top" title="Circuitos diseñados y probados virtualmente en Tinkercad">
                     <div class="stat-number" id="totalSimCircuits">0</div>
                     <div class="stat-label">Circ. Simulador</div>
                 </div>
-                <div class="col stat-item border-start">
+                <div class="col stat-item border-start" data-bs-toggle="tooltip" data-bs-placement="top" title="Placa de microcontrolador utilizada en todo el curso">
                     <div class="stat-number"><i class="bi bi-cpu"></i></div>
                     <div class="stat-label">Arduino UNO</div>
                 </div>
@@ -654,6 +837,46 @@
 
     <!-- Controles Flotantes -->
     <div class="floating-controls">
+        <!-- === #22: MODO PRESENTACIÓN (arriba de accesibilidad) === -->
+        <button id="presentationModeBtn" class="btn-float" title="Modo Presentación">
+            <i class="bi bi-easel2-fill"></i>
+        </button>
+
+        <!-- === #12: BURBUJA DE ACCESIBILIDAD === -->
+        <div class="accessibility-container">
+            <button id="accessibilityToggleBtn" class="btn-float" title="Accesibilidad" onclick="toggleAccessibilityPopover(event)">
+                <i class="bi bi-universal-access"></i>
+            </button>
+            <div id="accessibilityPopover" class="accessibility-popover">
+                <div class="a11y-popover-title">
+                    <i class="bi bi-universal-access-circle"></i>
+                    <span>Accesibilidad</span>
+                </div>
+
+                <div class="a11y-row">
+                    <span>Tamaño de texto</span>
+                    <div class="a11y-btn-group">
+                        <button type="button" onclick="changeFontSize(-1)">A-</button>
+                        <button type="button" onclick="changeFontSize(1)">A+</button>
+                    </div>
+                </div>
+
+                <div class="a11y-row">
+                    <span>Texto en negrita</span>
+                    <button type="button" id="boldToggleBtn" class="a11y-toggle-btn" onclick="toggleBold()">Activar</button>
+                </div>
+
+                <div class="a11y-row">
+                    <span>Espaciado de lectura</span>
+                    <button type="button" id="spacingToggleBtn" class="a11y-toggle-btn" onclick="toggleSpacing()">Activar</button>
+                </div>
+
+                <button type="button" class="a11y-reset-btn" onclick="resetAccessibility()">
+                    <i class="bi bi-arrow-counterclockwise"></i> Restablecer todo
+                </button>
+            </div>
+        </div>
+
         <button id="toggleDarkMode" class="btn-float" title="Cambiar Modo de Lectura">
             <i class="bi bi-sun-fill"></i>
         </button>
@@ -723,6 +946,70 @@
             }
         }
 
+        /* === #1: CONSTRUCCIÓN DEL ÍNDICE LATERAL (TOC) Y SCROLL SPY === */
+        function buildTocSidebar() {
+            const sections = document.querySelectorAll('.content-section');
+            const tocSidebar = document.getElementById('tocSidebar');
+            if (!tocSidebar) return;
+
+            let html = '<div class="toc-title">Semanas</div>';
+            sections.forEach((section, index) => {
+                const id = section.id || `semana${index + 1}`;
+                html += `<a href="#${id}" class="toc-link" data-target="${id}" title="Ir a la Semana ${index + 1}">${index + 1}</a>`;
+            });
+            tocSidebar.innerHTML = html;
+        }
+
+        function setupTocScrollSpy() {
+            const sections = document.querySelectorAll('.content-section');
+            if (!sections.length) return;
+
+            const spyObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const link = document.querySelector(`.toc-link[data-target="${entry.target.id}"]`);
+                    if (!link) return;
+                    if (entry.isIntersecting) {
+                        document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+                        link.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.5, rootMargin: "-100px 0px -100px 0px" });
+
+            sections.forEach(section => spyObserver.observe(section));
+        }
+
+        /* === #10: ICONOS TEMÁTICOS SEGÚN CATEGORÍA === */
+        function addCategoryIcons() {
+            const iconMap = {
+                sensor: 'bi-broadcast',
+                fisico: 'bi-cpu-fill',
+                sim: 'bi-laptop'
+            };
+
+            document.querySelectorAll('.content-section').forEach(section => {
+                const categories = (section.getAttribute('data-category') || '').split(' ');
+                const titleElem = section.querySelector('.section-title');
+                if (!titleElem || titleElem.querySelector('.cat-icon')) return;
+
+                let iconClass = null;
+                if (categories.includes('sensor')) iconClass = iconMap.sensor;
+                else if (categories.includes('fisico')) iconClass = iconMap.fisico;
+                else if (categories.includes('sim')) iconClass = iconMap.sim;
+
+                if (iconClass) {
+                    const icon = document.createElement('i');
+                    icon.className = `bi ${iconClass} cat-icon`;
+                    titleElem.prepend(icon);
+                }
+            });
+        }
+
+        /* === #19: TOOLTIPS INFORMATIVOS EN ESTADÍSTICAS === */
+        function initTooltips() {
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+            tooltipTriggerList.forEach(el => new bootstrap.Tooltip(el));
+        }
+
         /* === LÓGICA DEL REPRODUCTOR DE AUDIO E INTERFAZ FLOTANTE === */
         const audio = document.getElementById('bgAudio');
         const popover = document.getElementById('musicPopover');
@@ -755,10 +1042,98 @@
             }
         }
 
-        // Cierra la mini ventana al hacer clic fuera de ella
+        /* === #12: LÓGICA DE LA BURBUJA DE ACCESIBILIDAD === */
+        const accessibilityContainer = document.querySelector('.accessibility-container');
+        const accessibilityPopover = document.getElementById('accessibilityPopover');
+        const boldToggleBtn = document.getElementById('boldToggleBtn');
+        const spacingToggleBtn = document.getElementById('spacingToggleBtn');
+
+        const fontScaleSteps = [0.85, 0.9, 1, 1.1, 1.2, 1.3];
+        let fontScaleIndex = 2; // valor 1 (normal) por defecto
+
+        function toggleAccessibilityPopover(event) {
+            event.stopPropagation();
+            accessibilityPopover.classList.toggle('show');
+        }
+
+        function applyFontScale() {
+            document.body.style.setProperty('--font-scale', fontScaleSteps[fontScaleIndex]);
+            localStorage.setItem('a11y-font-index', fontScaleIndex);
+        }
+
+        function changeFontSize(direction) {
+            fontScaleIndex = Math.min(fontScaleSteps.length - 1, Math.max(0, fontScaleIndex + direction));
+            applyFontScale();
+        }
+
+        function toggleBold() {
+            const isBoldActive = boldToggleBtn.classList.contains('active');
+            document.body.style.setProperty('--content-font-weight', isBoldActive ? '400' : '700');
+            boldToggleBtn.classList.toggle('active', !isBoldActive);
+            boldToggleBtn.innerText = !isBoldActive ? 'Activado' : 'Activar';
+            localStorage.setItem('a11y-bold', !isBoldActive);
+        }
+
+        function toggleSpacing() {
+            const isSpacingActive = spacingToggleBtn.classList.contains('active');
+            if (!isSpacingActive) {
+                document.body.style.setProperty('--content-letter-spacing', '0.04em');
+                document.body.style.setProperty('--content-line-height', '2');
+            } else {
+                document.body.style.setProperty('--content-letter-spacing', 'normal');
+                document.body.style.setProperty('--content-line-height', '1.6');
+            }
+            spacingToggleBtn.classList.toggle('active', !isSpacingActive);
+            spacingToggleBtn.innerText = !isSpacingActive ? 'Activado' : 'Activar';
+            localStorage.setItem('a11y-spacing', !isSpacingActive);
+        }
+
+        function resetAccessibility() {
+            fontScaleIndex = 2;
+            applyFontScale();
+
+            document.body.style.setProperty('--content-font-weight', '400');
+            document.body.style.setProperty('--content-letter-spacing', 'normal');
+            document.body.style.setProperty('--content-line-height', '1.6');
+
+            boldToggleBtn.classList.remove('active');
+            boldToggleBtn.innerText = 'Activar';
+            spacingToggleBtn.classList.remove('active');
+            spacingToggleBtn.innerText = 'Activar';
+
+            localStorage.removeItem('a11y-font-index');
+            localStorage.removeItem('a11y-bold');
+            localStorage.removeItem('a11y-spacing');
+        }
+
+        function loadAccessibilityPreferences() {
+            const savedIndex = localStorage.getItem('a11y-font-index');
+            if (savedIndex !== null) {
+                fontScaleIndex = parseInt(savedIndex, 10);
+                applyFontScale();
+            }
+
+            if (localStorage.getItem('a11y-bold') === 'true') {
+                document.body.style.setProperty('--content-font-weight', '700');
+                boldToggleBtn.classList.add('active');
+                boldToggleBtn.innerText = 'Activado';
+            }
+
+            if (localStorage.getItem('a11y-spacing') === 'true') {
+                document.body.style.setProperty('--content-letter-spacing', '0.04em');
+                document.body.style.setProperty('--content-line-height', '2');
+                spacingToggleBtn.classList.add('active');
+                spacingToggleBtn.innerText = 'Activado';
+            }
+        }
+
+        // Cierra las mini ventanas al hacer clic fuera de ellas
         document.addEventListener('click', (event) => {
             if (!event.target.closest('.audio-player-container')) {
                 popover.classList.remove('show');
+            }
+            if (accessibilityContainer && !event.target.closest('.accessibility-container')) {
+                accessibilityPopover.classList.remove('show');
             }
         });
 
@@ -838,6 +1213,9 @@
                 } else {
                     icon.className = 'bi bi-sun-fill';
                 }
+
+                // #13: Guardar preferencia de modo oscuro
+                localStorage.setItem('dark-mode', document.body.classList.contains('dark-mode'));
             });
         }
 
@@ -855,13 +1233,58 @@
             } else {
                 root.style.setProperty('--primary-gradient', 'linear-gradient(135deg, rgba(102, 126, 234, 0.95) 0%, rgba(118, 75, 162, 0.95) 100%)');
                 root.style.setProperty('--accent-color', '#5a67d8');
+                themeName = 'default';
             }
+
+            // #13: Guardar preferencia de tema
+            localStorage.setItem('site-theme', themeName);
+        }
+
+        // #13: Cargar tema y modo oscuro guardados previamente
+        function loadThemePreferences() {
+            const savedTheme = localStorage.getItem('site-theme') || 'default';
+            changeTheme(savedTheme);
+
+            if (localStorage.getItem('dark-mode') === 'true') {
+                document.body.classList.add('dark-mode');
+                if (darkModeBtn) {
+                    const icon = darkModeBtn.querySelector('i');
+                    if (icon) icon.className = 'bi bi-moon-stars-fill';
+                }
+            }
+        }
+
+        /* === #22: MODO PRESENTACIÓN === */
+        const presentationModeBtn = document.getElementById('presentationModeBtn');
+        let presentationModeActive = false;
+
+        if (presentationModeBtn) {
+            presentationModeBtn.addEventListener('click', () => {
+                presentationModeActive = !presentationModeActive;
+                document.body.classList.toggle('presentation-mode', presentationModeActive);
+                const icon = presentationModeBtn.querySelector('i');
+
+                if (presentationModeActive) {
+                    icon.className = 'bi bi-fullscreen-exit';
+                    presentationModeBtn.title = 'Salir del Modo Presentación';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    icon.className = 'bi bi-easel2-fill';
+                    presentationModeBtn.title = 'Modo Presentación';
+                }
+            });
         }
 
         // Inicialización al cargar la página
         document.addEventListener('DOMContentLoaded', () => {
             updateDynamicStats();
+            buildTocSidebar();
+            setupTocScrollSpy();
+            addCategoryIcons();
             observeSections();
+            loadThemePreferences();
+            loadAccessibilityPreferences();
+            initTooltips();
         });
     </script>
 </body>
