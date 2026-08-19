@@ -649,8 +649,8 @@
                     <div class="stat-number" id="totalWeeks">0</div>
                     <div class="stat-label">Semanas</div>
                 </div>
-                <div class="col stat-item border-start" data-bs-toggle="tooltip" data-bs-placement="top" title="Cantidad de tipos de sensores utilizados a lo largo del curso (ultrasónico y PIR)">
-                    <div class="stat-number">2</div>
+                <div class="col stat-item border-start" data-bs-toggle="tooltip" data-bs-placement="top" title="Tipos de sensores utilizados a lo largo del curso: ultrasónico, PIR y fotoresistencia">
+                    <div class="stat-number" id="totalSensorTypes">3</div>
                     <div class="stat-label">Sensores</div>
                 </div>
                 <div class="col stat-item border-start" data-bs-toggle="tooltip" data-bs-placement="top" title="Circuitos armados y probados con componentes reales en Arduino">
@@ -834,9 +834,9 @@
             </p>
         </section>
 
-        <section id="semana11" class="content-section reveal-on-scroll" data-category="sim">
-            <h2 class="section-title">Semana 11: Circuito con fotoresistencia y un buzzer</h2>
-            <p class="placeholder-text">En esta clase avanzamos hacia nuevas implementaciones y lógicas de programación desarrolladas y simuladas íntegramente en Tinkercad, integrando los conceptos vistos a lo largo del curso.</p>
+        <section id="semana11" class="content-section reveal-on-scroll" data-category="sensor sim">
+            <h2 class="section-title">Semana 11: Circuito con sensor de fotoresistencia y un buzzer</h2>
+            <p class="placeholder-text">En esta clase avanzamos hacia nuevas implementaciones y lógicas de programación utilizando un sensor de fotoresistencia junto a un buzzer, desarrollados y simulados íntegramente en Tinkercad, integrando los conceptos vistos a lo largo del curso.</p>
             
             <div class="media-container" style="max-height: 450px; display: flex; justify-content: center; background-color: #000;">
                 <video style="width: 100%; max-height: 450px; object-fit: contain;" controls preload="metadata">
@@ -845,7 +845,7 @@
                 </video>
             </div>
             <p class="mt-2 text-center">
-                <small class="text-muted">Video explicativo del circuito simulado (Tinkercad).</small>
+                <small class="text-muted">Video explicativo del circuito simulado (Tinkercad) con sensor y buzzer.</small>
             </p>
         </section>
     </div>
@@ -1294,8 +1294,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateDynamicStats();
             buildTocSidebar();
-            setupTocScrollSpy();
             addCategoryIcons();
+            setupTocScrollSpy();
             observeSections();
             loadThemePreferences();
             loadAccessibilityPreferences();
